@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ConnectedIn</title>
+</head>
+<body>
+{% if profiles %}
+    <ul>
+    {% for profile in profiles %}
+        <li>Nome: <a href="{% url 'show_profile' profile.id %}">{{ profile.name }}</a> // E-mail: {{ profile.email }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No profiles found!</p>
+{% endif%}
+</body>
+</html>

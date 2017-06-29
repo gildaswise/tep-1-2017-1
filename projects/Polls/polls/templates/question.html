@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Polls - Question {{ question.pk }}</title>
+</head>
+<body>
+<h2>{{ question.question_text }}</h2>
+<ol>
+{% for choice in question.choice__set %}
+    <li>choice.choice_text</li>
+{% endfor %}
+</ol>
+</body>
+</html>
