@@ -6,7 +6,7 @@ class Profile(models.Model):
     status = models.CharField(max_length=64)
 
 class Friendship(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="friends")
     friend = models.ForeignKey(Profile, on_delete=models.CASCADE)
     date_added = models.DateField()
 
@@ -16,13 +16,12 @@ class Chat(models.Model):
 class SingleChat(Chat):
     friendship = models.ForeignKey(Friendship)
 
-class GroupMember(models.Model):
-    chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
-    friendship = models.ForeignKey(Friendship, on_delete=models.CASCADE)
-
 class GroupChat(Chat):
     title = models.CharField(max_length=64)
-    members = models.ManyToManyField(GroupMember, through=GroupMember, through_fields=('chat', 'friendship'))
+
+class GroupMember(models.Model):
+    chat = models.ForeignKey(GroupChat, on_delete=models.CASCADE, related_name="members")
+    friendship = models.ForeignKey(Friendship, on_delete=models.CASCADE)
 
 class Message(models.Model):
     chat = models.ForeignKey(Chat, related_name="messages", on_delete=models.CASCADE)

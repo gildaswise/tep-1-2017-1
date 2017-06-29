@@ -5,11 +5,11 @@ from .models import *
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html', {"profiles": Profile.objects.all()})
+    return render(request, 'index.html', {"current_user": current_user(request), "profiles": Profile.objects.all()})
 
 def profile(request, pk):
     pfl = Profile.objects.get(pk=pk)
-    return render(request, 'profile.html', {"profile": pfl})
+    return render(request, 'profile.html', {"current_user": current_user(request), "profile": pfl})
 
 def current_user(request):
     return Profile.objects.get(id=1)
@@ -18,8 +18,7 @@ def invite(request, pk):
     invited_profile = Profile.objects.get(id=pk)
     current_profile = current_user(request)
     current_profile.invite(invited_profile)
-    return render(request, 'invite.html',
-                  {
+    return render(request, 'invite.html', {
+                      "current_user": current_user(request),
                       "invites": current_profile.invites_made.all(),
-                      "invited": current_profile.invites_received.all()
-                  })
+                      "invited": current_profile.invites_received.all()})

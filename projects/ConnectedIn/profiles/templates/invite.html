@@ -1,29 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>ConnectedIn</title>
-</head>
-<body>
-{% if invites %}
-    Convidados:
-    <ul>
-    {% for invite in invites %}
-        <li>Nome: <a href="{% url 'show_profile' invite.invited.id %}">{{ invite.invited.name }}</a> // E-mail: {{ invite.invited.email }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No invites made!</p>
-{% endif%}
-{% if invited %}
-    Convites recebidos:
-    <ul>
-    {% for invite in invited %}
-        <li>Nome: <a href="{% url 'show_profile' invite.invited.id %}">{{ invite.invited.name }}</a> // E-mail: {{ invite.invited.email }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No invites received!</p>
-{% endif%}
-</body>
-</html>
+{% extends 'default.html' %}
+{% block content %}
+
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading"><strong>Invites made</strong></div>
+        {% if invites %}
+            <ul class="list-group">
+            {% for invite in invites %}
+                <li class="list-group-item">Name: <a href="{% url 'show_profile' invite.invited.id %}">{{ invite.invited.name }}</a> // E-mail: {{ invite.invited.email }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No invites made!</p>
+        {% endif%}
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><strong>Invites received</strong></div>
+        {% if invited %}
+            <ul class="list-group">
+            {% for invite in invited %}
+                <li class="list-group-item">Name: <a href="{% url 'show_profile' invite.invited.id %}">{{ invite.invited.name }}</a> // E-mail: {{ invite.invited.email }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No invites received!</p>
+    {% endif %}
+    </div>
+</div>
+
+{% endblock %}
