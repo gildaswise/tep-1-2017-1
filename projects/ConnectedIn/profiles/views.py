@@ -14,6 +14,13 @@ def profile(request, pk):
 def current_user(request):
     return Profile.objects.get(id=1)
 
+def invites(request):
+    current_profile = current_user(request)
+    return render(request, 'invite.html', {
+        "current_user": current_user(request),
+        "invites": current_profile.invites_made.all(),
+        "invited": current_profile.invites_received.all()})
+
 def invite(request, pk):
     invited_profile = Profile.objects.get(id=pk)
     current_profile = current_user(request)
