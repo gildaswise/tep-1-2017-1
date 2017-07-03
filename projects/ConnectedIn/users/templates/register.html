@@ -1,0 +1,42 @@
+{% extends 'user_default.html' %}
+
+{% block extra-title %} - Create your account {% endblock %}
+
+{% block content %}
+
+<form class="form-signin" action="{% url 'register' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="field_email">E-mail</label>
+        <input type="email" id="field_email" name="email" class="form-control" placeholder="example@email.com" required autofocus>
+    </div>
+
+    <div class="form-group">
+        <label for="field_name">Name</label>
+        <input type="text" id="field_name" name="name" class="form-control" placeholder="Someone" required >
+    </div>
+
+    <div class="form-group">
+        <label for="field_password">Password</label>
+        <input type="password" id="field_password" name="password" class="form-control" placeholder="********" required>
+    </div>
+
+    <hr />
+    <div class="form-group">
+        <label for="field_password">Phone</label>
+        <input type="text" id="field_phone" name="phone" class="form-control" placeholder="(99) 99999-9999">
+    </div>
+    <div class="form-group">
+        <label for="field_password">Business' name</label>
+        <input type="text" id="field_business" name="business" class="form-control" placeholder="Somewhere">
+    </div>
+
+    <hr />
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit">Submit</button>
+
+</form>
+
+{% endblock %}

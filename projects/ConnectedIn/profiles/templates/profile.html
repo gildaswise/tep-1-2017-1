@@ -11,7 +11,7 @@
         </address>
         {% if profile.pk is current_user.pk %}
         {% elif is_friend %}
-            <a class="button" href="#">You already have {{profile.name}} in your friend list!</a>
+            <div class="well well-sm">You already have {{profile.name}} in your friend list!</div>
         {% else %}
             <a class="button" href="{% url 'invite_profile' profile.id %}">Invite</a>
         {% endif %}
