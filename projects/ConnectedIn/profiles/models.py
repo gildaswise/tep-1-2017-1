@@ -15,6 +15,9 @@ class Profile(models.Model):
         new_invite = Invite(inviter=self, invited=invited_profile)
         new_invite.save()
 
+    def invite_count(self):
+        return self.invites_received.count()
+
 class Invite(models.Model):
     inviter = models.ForeignKey(Profile, related_name="invites_made")
     invited = models.ForeignKey(Profile, related_name="invites_received")

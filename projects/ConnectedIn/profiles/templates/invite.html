@@ -1,4 +1,9 @@
 {% extends 'default.html' %}
+
+{% block js %}
+$('.dropdown-toggle').dropdown()
+{% endblock %}
+
 {% block content %}
 
 <div class="col-lg-12">
@@ -14,14 +19,18 @@
             <p>No invites made!</p>
         {% endif%}
     </div>
+    {% if invited %}
     <div class="panel panel-default">
-        <div class="panel-heading"><strong>Invites received</strong></div>
-        {% if invited %}
-            <ul class="list-group">
+        <div class="panel-heading"><strong>Invites received ({{ invited.count }})</strong></div>
+            <div class="list-group clearfix">
             {% for invite in invited %}
-                <li class="list-group-item">Name: <a href="{% url 'show_profile' invite.invited.id %}">{{ invite.invited.name }}</a> // E-mail: {{ invite.invited.email }}</li>
+                <div class="list-group-item clearfix">
+                    <span>Name: <a href="{% url 'show_profile' invite.invited.id %}">{{ invite.invited.name }}</a> // E-mail: {{ invite.invited.email }}</span>
+                    <a class="btn-link pull-right" style="margin-left:1em">Decline</a>
+                    <a class="btn-link pull-right">Accept</a>
+                </div>
             {% endfor %}
-            </ul>
+            </div>
         {% else %}
             <p>No invites received!</p>
     {% endif %}
