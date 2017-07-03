@@ -9,7 +9,12 @@
             Tel: {{profile.phone}}<br/>
             <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
         </address>
-        <a class="button" href="{% url 'invite_profile' profile.id %}">Invite</a>
+        {% if profile.pk is current_user.pk %}
+        {% elif is_friend %}
+            <a class="button" href="#">You already have {{profile.name}} in your friend list!</a>
+        {% else %}
+            <a class="button" href="{% url 'invite_profile' profile.id %}">Invite</a>
+        {% endif %}
     </div>
 </div>
 

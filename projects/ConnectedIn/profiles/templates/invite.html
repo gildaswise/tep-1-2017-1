@@ -7,34 +7,49 @@ $('.dropdown-toggle').dropdown()
 {% block content %}
 
 <div class="col-lg-12">
-    <div class="panel panel-default">
-        <div class="panel-heading"><strong>Invites made</strong></div>
-        {% if invites %}
-            <ul class="list-group">
-            {% for invite in invites %}
-                <li class="list-group-item">Name: <a href="{% url 'show_profile' invite.invited.id %}">{{ invite.invited.name }}</a> // E-mail: {{ invite.invited.email }}</li>
-            {% endfor %}
-            </ul>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>
+        {% if invited %}
+            You have {{invited.count}} pending request{{invited.count|pluralize:"s"}}
         {% else %}
-            <p>No invites made!</p>
-        {% endif%}
+            No pending invites!
+        {% endif %}
+        </strong>
     </div>
     {% if invited %}
-    <div class="panel panel-default">
-        <div class="panel-heading"><strong>Invites received ({{ invited.count }})</strong></div>
-            <div class="list-group clearfix">
-            {% for invite in invited %}
-                <div class="list-group-item clearfix">
-                    <span>Name: <a href="{% url 'show_profile' invite.invited.id %}">{{ invite.invited.name }}</a> // E-mail: {{ invite.invited.email }}</span>
-                    <a class="btn-link pull-right" style="margin-left:1em">Decline</a>
-                    <a class="btn-link pull-right">Accept</a>
-                </div>
-            {% endfor %}
+    <div class="list-group clearfix">
+        {% for invite in invited %}
+            <div class="list-group-item clearfix">
+                <span>Name: <a href="{% url 'show_profile' invite.inviter.id %}">{{ invite.inviter.name }}</a> // E-mail: {{ invite.inviter.email }}</span>
+                <a class="btn-link pull-right" style="margin-left:1em">Decline</a>
+                <a href="{% url 'invite_accept' invite.id %}" class="btn-link pull-right">Accept</a>
             </div>
-        {% else %}
-            <p>No invites received!</p>
+        {% endfor %}
     {% endif %}
     </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>
+        {% if invites %}
+            You have {{invites.count}} request{{invited.count|pluralize:"s"}} made!
+        {% else %}
+            No requests made!
+        {% endif %}
+        </strong>
+    </div>
+    {% if invites %}
+        <ul class="list-group">
+        {% for invite in invites %}
+            <li class="list-group-item">Name: <a href="{% url 'show_profile' invite.invited.id %}">{{ invite.invited.name }}</a> // E-mail: {{ invite.invited.email }}</li>
+        {% endfor %}
+        </ul>
+    {% endif%}
+</div>
+
 </div>
 
 {% endblock %}
