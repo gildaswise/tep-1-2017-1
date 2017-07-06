@@ -1,0 +1,61 @@
+{% extends 'default.html' %}
+
+{% block js %}
+    $('.confirmation').on('click', function () {
+        return confirm('Are you sure?');
+    });
+{% endblock %}
+
+{% block content %}
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>
+                {% if question.choices %}
+                    All choices
+                {% else %}
+                    No choices found!
+                {% endif %}
+            </strong>
+            <span class="pull-right confirmation"><a href="{% url 'toggle_question' question.id %}">
+                {% if question.closed %}
+                    Open
+                {% else %}
+                    Close
+                {% endif %}
+            </a></span>
+             
+            <span class="pull-right confirmation"><a href="{% url 'remove_question' question.id %}">Remove</a>  </span>
+        </div>
+    {% if question.choices %}
+        <ul class="list-group">
+        {% for choice in question.choices.all %}
+            <li class="list-group-item"><a href="{% url 'vote_choice' choice.id %}">{{ choice.choice_text }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif%}
+    </div>
+    <hr/>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>
+                {% if available_choices %}
+                    Available choices
+                {% else %}
+                    No more choices available!
+                {% endif %}
+            </strong>
+        </div>
+    {% if available_choices.count %}
+        <ul class="list-group">
+        {% for choice in available_choices.all %}
+            <li class="list-group-item">
+                {{ choice.choice_text }}
+                <span class="pull-right"><a href="{% url 'add_choice' question.id choice.id %}">Add</a></span>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif%}
+    </div>
+</div>
+{% endblock %}

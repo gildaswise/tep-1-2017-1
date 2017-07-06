@@ -5,18 +5,17 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <strong>
-                {% if question.choices %}
-                    All choices
+                {% if choices %}
+                    All choices and its results
                 {% else %}
                     No choices found!
                 {% endif %}
             </strong>
-            <span class="glyphicons glyphicons-settings pull-right"><a href="{% url 'manage' question.id %}">Manage</a></span>
         </div>
-    {% if question.choices %}
+    {% if choices %}
         <ul class="list-group">
-        {% for choice in question.choices.all %}
-            <li class="list-group-item"><a href="{% url 'vote_choice' choice.id %}">{{ choice.choice_text }}</a></li>
+        {% for choice in choices %}
+            <li class="list-group-item">{{choice.choice_text}}<span class="pull-right">{{choice.votes}}</span></li>
         {% endfor %}
         </ul>
     {% endif%}
