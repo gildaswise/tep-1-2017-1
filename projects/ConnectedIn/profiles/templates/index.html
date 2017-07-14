@@ -1,25 +1,31 @@
 {% extends 'default.html' %}
 {% block content %}
 
-<div class="col-lg-12">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <strong>
-                {% if profiles %}
-                    All profiles
-                {% else %}
-                    No profiles found!
-                {% endif %}
-            </strong>
+{% if current_user.user.is_superuser %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>
+                    {% if profiles %}
+                        All profiles
+                    {% else %}
+                        No profiles found!
+                    {% endif %}
+                </strong>
+            </div>
+            {% if profiles %}
+                <div class="panel-body">
+                    <div class="list-group">
+                    {% for profile in profiles %}
+                        <div class="list-group-item">Nome: <a href="{% url 'show_profile' profile.id %}">{{ profile.name }}</a> // E-mail: {{ profile.email }}</div>
+                    {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
         </div>
-    {% if profiles %}
-        <ul class="list-group">
-        {% for profile in profiles %}
-            <li class="list-group-item">Nome: <a href="{% url 'show_profile' profile.id %}">{{ profile.name }}</a> // E-mail: {{ profile.email }}</li>
-        {% endfor %}
-        </ul>
-    {% endif%}
     </div>
 </div>
+{% endif %}
 
 {% endblock %}
