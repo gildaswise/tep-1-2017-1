@@ -2,6 +2,25 @@
 import os
 import sys
 
+
+"""
+Checklist da atividade 1
+[ ] - Alterar senha
+[ ] - Recuperar senha
+[ ] - Conceder privilegio de superuser a outro usuario
+[ ] - Bloquear usuario
+[ ] - Incluir postagem
+[ ] - Exibir timeline
+[ ] - Pesquisar usuario
+[ ] - Novo layout
+[ ] - Pagina para superuser
+[ ] - Desativar/ativar proprio perfil
+[ ] - Excluir perfis (superuser)
+[ ] - Excluir postagem (superuser)
+[ ] - Usuario com foto
+[ ] - Postagens com foto
+"""
+
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "connectedin.settings")
     try:
