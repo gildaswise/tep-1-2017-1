@@ -5,7 +5,7 @@ import sys
 
 """
 Checklist da atividade 1
-[ ] - Alterar senha
+[X] - Alterar senha
 [ ] - Recuperar senha
 [ ] - Conceder privilegio de superuser a outro usuario
 [ ] - Bloquear usuario
