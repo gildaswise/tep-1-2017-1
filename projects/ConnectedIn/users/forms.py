@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 
 class FormRegisterUser(forms.Form):
+
     name = forms.CharField(required=True)
     email = forms.EmailField(required=True)
     password = forms.PasswordInput()
@@ -19,3 +20,7 @@ class FormRegisterUser(forms.Form):
             valid = not user_exists
             self.add_error(field="email", error="There's an account with that e-mail already!")
         return valid
+
+    def clean(self):
+        super(FormRegisterUser, self).clean()
+

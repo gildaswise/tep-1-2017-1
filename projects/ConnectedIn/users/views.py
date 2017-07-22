@@ -5,6 +5,7 @@ from django.views.generic.base import View
 from profiles.models import Profile
 from users.forms import FormRegisterUser
 
+
 class ViewRegisterUser(View):
 
     template = 'register.html'
@@ -16,17 +17,13 @@ class ViewRegisterUser(View):
         form = FormRegisterUser(request.POST)
         if form.is_valid():
             data = form.data
-            user = User.objects.create(
-                username=data['name'].replace(" ", "_").lower(),
-                email=data['email'],
-                password=data['password'])
+            user = User.objects.create_user(username=data['name'].replace(" ", "_").lower(), email=data['email'], password=data['password'])
             profile = Profile.objects.create(
                 name=data['name'],
                 phone=data['phone'],
                 business=data['business'],
-                user=user
-            )
+                user=user)
             profile.save()
-            return redirect('index')
+            return redirect('login')
         return render(request, self.template, {'form': form})
 
