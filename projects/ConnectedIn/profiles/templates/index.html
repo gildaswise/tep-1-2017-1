@@ -1,7 +1,7 @@
 {% extends 'default.html' %}
 {% block content %}
 
-{% if current_user.user.is_superuser %}
+{% if current_profile.user.is_superuser %}
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -18,7 +18,7 @@
                 <div class="panel-body">
                     <div class="list-group">
                     {% for profile in profiles %}
-                        <div class="list-group-item">Nome: <a href="{% url 'show_profile' profile.id %}">{{ profile.name }}</a> // E-mail: {{ profile.email }}</div>
+                        <div class="list-group-item">Nome: <a href="{% url 'show_profile' profile.id %}">{{ profile.name }}</a><br>E-mail: {{ profile.email }}</div>
                     {% endfor %}
                     </div>
                 </div>

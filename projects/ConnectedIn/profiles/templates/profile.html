@@ -5,7 +5,7 @@
     <div class="col-md-4 col-xs-6">
         <h2>{{profile.name}}</h2>
     </div>
-    {% if profile.pk is current_user.pk %}
+    {% if profile.pk is current_profile.pk %}
     <div class="col-md-8 col-xs-12">
         <div class="dropdown pull-right" style="margin-top: 1.5em;">
           <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -30,7 +30,7 @@
             Tel: {{profile.phone}}<br/>
             <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
         </address>
-        {% if profile.pk is current_user.pk %}
+        {% if profile.pk is current_profile.pk %}
         {% elif is_friend %}
             <div class="well well-sm">You already have {{profile.name}} in your friend list!</div>
         {% else %}

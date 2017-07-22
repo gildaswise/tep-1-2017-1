@@ -13,14 +13,14 @@
 
     <div class="header">
     <ul class="nav nav-pills pull-right">
-        {% if current_user %}
+        {% if current_profile %}
             <li><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'show_profile' current_user.id %}"><b>{{ current_user.name }}</b></a></li>
-            <li><a href="{% url 'invites' %}">Requests ({{ current_user.invites_received.count }})</a></li>
-            <li><a href="{% url 'friends' %}">Friends ({{ current_user.friends.count }})</a></li>
-            <li><a href="/logout/">Logout</a></li>
+            <li><a href="{% url 'show_profile' current_profile.pk %}"><b>{{ current_profile.name }}</b></a></li>
+            <li><a href="{% url 'invites' %}">Requests ({{ current_profile.invites_received.count }})</a></li>
+            <li><a href="{% url 'friends' %}">Friends ({{ current_profile.friends.count }})</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
         {% else %}
-            <li><a href="/login/"><b>Login</b></a></li>
+            <li><a href="{% url 'login' %}"><b>Login</b></a></li>
             <li><a href="{% url 'register' %}"><b>Register</b></a></li>
         {% endif %}
     </ul>
