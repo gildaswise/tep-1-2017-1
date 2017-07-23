@@ -24,6 +24,9 @@ class Profile(models.Model):
     def is_friend_of(self, profile):
         return self.friends.filter(pk=profile.pk).first() is not None
 
+    def has_invited(self, profile):
+        return self.invites_made.filter(invited=profile) is not None
+
 
 class Invite(models.Model):
 

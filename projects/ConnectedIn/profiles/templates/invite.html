@@ -24,7 +24,7 @@ $('.dropdown-toggle').dropdown()
                     {% for invite in invited %}
                         <div class="list-group-item clearfix">
                             <span>Name: <a href="{% url 'show_profile' invite.inviter.id %}">{{ invite.inviter.name }}</a> // E-mail: {{ invite.inviter.email }}</span>
-                            <a class="btn-link pull-right" style="margin-left:1em">Decline</a>
+                            <a href="{% url 'invite_decline' invite.id %}" class="btn-link pull-right" style="margin-left:1em">Decline</a>
                             <a href="{% url 'invite_accept' invite.id %}" class="btn-link pull-right">Accept</a>
                         </div>
                     {% endfor %}
