@@ -1,14 +1,17 @@
 from django import forms
 from django.contrib.auth.models import User
+from profiles.models import Profile
 
 
 class FormRegisterUser(forms.Form):
 
-    name = forms.CharField(required=True)
+    name = forms.CharField(max_length=64, required=True)
     email = forms.EmailField(required=True)
     password = forms.PasswordInput()
-    phone = forms.CharField(required=True)
-    business = forms.CharField(required=True)
+    phone = forms.CharField(max_length=12, required=True)
+    business = forms.CharField(max_length=32, required=True)
+    security_question = forms.ChoiceField(choices=Profile.DEFAULT_QUESTIONS, required=True)
+    security_answer = forms.CharField(max_length=64, required=True)
 
     def is_valid_from_form(self):
         return super(FormRegisterUser, self).is_valid()
@@ -23,4 +26,3 @@ class FormRegisterUser(forms.Form):
 
     def clean(self):
         super(FormRegisterUser, self).clean()
-

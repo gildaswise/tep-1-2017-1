@@ -4,10 +4,18 @@ from django.db import models
 
 class Profile(models.Model):
 
+    DEFAULT_QUESTIONS = (
+        (1, "What is your pet's name?"),
+        (2, "Where were you born?"),
+        (3, "What is your main nickname?"),
+    )
+
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     name = models.CharField(max_length=64, null=False)
     phone = models.CharField(max_length=12, null=False)
-    business = models.CharField(max_length=64, null=False)
+    business = models.CharField(max_length=32, null=False)
+    security_question = models.CharField(max_length=1, null=False, choices=DEFAULT_QUESTIONS, default=1)
+    security_answer = models.CharField(max_length=64, null=False)
     friends = models.ManyToManyField('self', blank=True)
 
     def __str__(self):
