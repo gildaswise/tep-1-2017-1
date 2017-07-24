@@ -38,19 +38,16 @@ def view_invites(request):
     return render(request, 'invite.html', {
         "current_profile": current_profile,
         "invites": current_profile.invites_made.all(),
-        "invited": current_profile.invites_received.all()})
+        "invited": current_profile.invites_received.all()
+    })
 
 
 @login_required
-def invites(request, pk):
+def invite_profile(request, pk):
     invited_profile = Profile.objects.get(id=pk)
     current_profile = get_current_profile(request)
     current_profile.invite(invited_profile)
-    return render(request, 'invite.html', {
-        "current_profile": current_profile,
-        "invites": current_profile.invites_made.all(),
-        "invited": current_profile.invites_received.all()
-    })
+    return redirect('view_invites')
 
 
 @login_required
@@ -74,3 +71,11 @@ def view_friends(request):
         "current_profile": current_profile,
         "friends": current_profile.friends.all()
     })
+
+
+@login_required
+def remove_a_friend(request, friend_pk):
+    current_profile = get_current_profile(request)
+    friend_profile = Profile.objects.get(friend_pk)
+    current_profile.remove_friend(friend_profile)
+    return redirect('friends')

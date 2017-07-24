@@ -24,7 +24,7 @@ $('.dropdown-toggle').dropdown()
                     {% for friend in friends %}
                         <div class="list-group-item clearfix">
                             <span>Name: <a href="{% url 'show_profile' friend.id %}">{{ friend.name }}</a> // E-mail: {{ friend.email }}</span>
-                            <a class="btn-link pull-right">Remove</a>
+                            <a href="{% url 'remove_a_friend' friend.id %}" class="btn-link pull-right">Remove</a>
                         </div>
                     {% endfor %}
                 {% endif %}

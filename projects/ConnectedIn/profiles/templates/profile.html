@@ -19,7 +19,7 @@
               <li><a href="#">Deactivate account</a></li>
               <li><a href="#">Delete account</a></li>
             {% elif is_friend %}
-              <li><a href="#">Remove friend</a></li>
+              <li><a href="{% url 'remove_a_friend' profile.id %}">Remove friend</a></li>
               <li><a href="#">Block</a></li>
             {% elif not has_invited %}
               <li><a href="{% url 'invite_profile' profile.id %}">Add as friend</a></li>
