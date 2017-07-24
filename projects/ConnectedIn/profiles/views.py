@@ -42,7 +42,7 @@ def view_invites(request):
 
 
 @login_required
-def invite(request, pk):
+def invites(request, pk):
     invited_profile = Profile.objects.get(id=pk)
     current_profile = get_current_profile(request)
     current_profile.invite(invited_profile)

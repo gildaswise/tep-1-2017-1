@@ -27,16 +27,20 @@ class Profile(models.Model):
     def has_invited(self, profile):
         return self.invites_made.filter(invited=profile) is not None
 
+    def remove_friend(self, profile):
+        if self.is_friend_of(profile):
+            self.friends.filter(pk=profile.pk).first().delete()
+
 
 class Invite(models.Model):
 
-    inviter = models.ForeignKey(Profile, related_name="invites_made")
+    invitee = models.ForeignKey(Profile, related_name="invites_made")
     invited = models.ForeignKey(Profile, related_name="invites_received")
 
     def __str__(self):
-        return "%s invited %s" % (self.inviter.name, self.invited.name)
+        return "%s invited %s" % (self.invitee.name, self.invited.name)
 
     def accept(self):
-        self.inviter.friends.add(self.invited)
-        self.invited.friends.add(self.inviter)
+        self.invitee.friends.add(self.invited)
+        self.invited.friends.add(self.invitee)
         self.delete()
