@@ -18,11 +18,18 @@
               <li role="separator" class="divider"></li>
               <li><a href="#">Deactivate account</a></li>
               <li><a href="#">Delete account</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="{% url 'blocks' %}">View profiles blocked</a></li>
             {% elif is_friend %}
               <li><a href="{% url 'remove_a_friend' profile.id %}">Remove friend</a></li>
-              <li><a href="#">Block</a></li>
-            {% elif not has_invited %}
+              <li><a href="{% url 'block' profile.id %}">Block</a></li>
+            {% elif not has_invited and not has_blocked and not is_blocked_by %}
               <li><a href="{% url 'invite_profile' profile.id %}">Add as friend</a></li>
+              <li><a href="{% url 'block' profile.id %}">Block</a></li>
+            {% elif has_blocked %}
+              <li><a href="{% url 'unblock' profile.id %}">Unblock</a></li>
+            {% elif is_blocked_by %}
+              <li><a href="{% url 'block' profile.id %}">Block</a></li>
             {% else %}
               <li><a>None for now</a></li>
             {% endif %}
@@ -41,6 +48,8 @@
         {% if profile.pk is current_profile.pk %}
         {% elif is_friend %}
           <div class="well well-sm">You already have {{profile.name}} in your friend list!</div>
+        {% elif is_blocked_by %}
+          <div class="well well-sm">You are blocked by this profile :/</div>
         {% endif %}
     </div>
 </div>

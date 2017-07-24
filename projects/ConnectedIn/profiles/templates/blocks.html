@@ -11,21 +11,20 @@ $('.dropdown-toggle').dropdown()
         <div class="panel panel-default">
             <div class="panel-heading">
                 <strong>
-                {% if friends %}
-                    You have {{friends.count}} friend{{friends.count|pluralize:"s"}}
+                {% if blocks %}
+                    You have {{blocks.count}} block{{blocks.count|pluralize:"s"}}
                 {% else %}
-                    You don't have any friends D:
+                    You don't have any blocked profiles!
                 {% endif %}
                 </strong>
             </div>
-            {% if friends %}
+            {% if blocks %}
             <div class="panel-body">
                 <div class="list-group clearfix">
-                    {% for friend in friends %}
+                    {% for block in blocks %}
                         <div class="list-group-item clearfix">
-                            <span>Name: <a href="{% url 'show_profile' friend.id %}">{{ friend.name }}</a> // E-mail: {{ friend.email }}</span>
-                            <span class="pull-right">  <a href="{% url 'remove_a_friend' friend.id %}" class="btn-link">Remove</a></span>
-                            <a href="{% url 'block' friend.id %}" class="btn-link pull-right">Block</a>
+                            <span>Name: <a href="{% url 'show_profile' block.blocked.id %}">{{ block.blocked.name }}</a> // E-mail: {{ block.blocked.email }}</span>
+                            <a href="{% url 'unblock' block.blocked.id %}" class="btn-link pull-right">Unblock</a>
                         </div>
                     {% endfor %}
                 {% endif %}

@@ -21,13 +21,15 @@ def index(request):
 
 
 @login_required
-def show_profile(request, pk):
+def show_profile(request, id):
     current_profile = get_current_profile(request)
-    pfl = Profile.objects.get(pk=pk)
+    pfl = Profile.objects.get(id=id)
     return render(request, 'profile.html', {
         "current_profile": current_profile,
         "is_friend": current_profile.is_friend_of(pfl),
         "has_invited": current_profile.has_invited(pfl),
+        "is_blocked_by": current_profile.is_blocked_by(pfl),
+        "has_blocked": current_profile.has_blocked(pfl),
         "profile": pfl,
     })
 
@@ -43,23 +45,23 @@ def view_invites(request):
 
 
 @login_required
-def invite_profile(request, pk):
-    invited_profile = Profile.objects.get(id=pk)
+def invite_profile(request, id):
+    invited_profile = Profile.objects.get(id=id)
     current_profile = get_current_profile(request)
     current_profile.invite(invited_profile)
     return redirect('view_invites')
 
 
 @login_required
-def invite_accept(request, invite_pk):
-    accepted_invite = Invite.objects.get(id=invite_pk)
+def invite_accept(request, invite_id):
+    accepted_invite = Invite.objects.get(id=invite_id)
     accepted_invite.accept()
     return redirect('invites')
 
 
 @login_required
-def invite_decline(request, invite_pk):
-    invite = Invite.objects.get(id=invite_pk)
+def invite_decline(request, invite_id):
+    invite = Invite.objects.get(id=invite_id)
     invite.delete()
     return redirect('invites')
 
@@ -74,8 +76,35 @@ def view_friends(request):
 
 
 @login_required
-def remove_a_friend(request, friend_pk):
+def remove_a_friend(request, friend_id):
     current_profile = get_current_profile(request)
-    friend_profile = Profile.objects.get(friend_pk)
+    friend_profile = Profile.objects.get(id=friend_id)
     current_profile.remove_friend(friend_profile)
     return redirect('friends')
+
+
+@login_required
+def block(request, id):
+    current_profile = get_current_profile(request)
+    pfl = Profile.objects.get(id=id)
+    previous_page = 'friends' if ('friends' in request.META['HTTP_REFERER']) else 'show_profile'
+    current_profile.block(pfl)
+    return redirect(previous_page) if previous_page == 'friends' else redirect(previous_page, id=id)
+
+
+@login_required
+def blocks(request):
+    current_profile = get_current_profile(request)
+    return render(request, 'blocks.html', {
+        "current_profile": current_profile,
+        "blocks": current_profile.blocks_made.all()
+    })
+
+
+@login_required
+def remove_block(request, id):
+    current_profile = get_current_profile(request)
+    pfl = Profile.objects.get(id=id)
+    previous_page = 'blocks' if ('blocks' in request.META['HTTP_REFERER']) else 'show_profile'
+    current_profile.remove_block(pfl)
+    return redirect(previous_page) if previous_page == 'blocks' else redirect(previous_page, id=id)

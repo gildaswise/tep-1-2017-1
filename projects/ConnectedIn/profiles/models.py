@@ -13,6 +13,11 @@ class Profile(models.Model):
     def __str__(self):
         return "%s" % self.name
 
+    def delete(self, using=None, keep_parents=False):
+        user = self.user
+        super(Profile, self).delete(using, keep_parents)
+        user.delete()
+
     @property
     def email(self):
         return self.user.email
@@ -25,11 +30,26 @@ class Profile(models.Model):
         return self.friends.filter(pk=profile.pk).first() is not None
 
     def has_invited(self, profile):
-        return self.invites_made.filter(invited=profile) is not None
+        return self.invites_made.filter(invited=profile).first() is not None
 
     def remove_friend(self, profile):
         if self.is_friend_of(profile):
-            self.friends.filter(pk=profile.pk).first().delete()
+            self.friends.remove(profile)
+
+    def is_blocked_by(self, profile):
+        return self.blocks_received.filter(blocker=profile).first() is not None
+
+    def has_blocked(self, profile):
+        return self.blocks_made.filter(blocked=profile).first() is not None
+
+    def block(self, profile):
+        Block.objects.create(blocker=self, blocked=profile)
+        if self.is_friend_of(profile):
+            self.remove_friend(profile)
+
+    def remove_block(self, profile):
+        if self.has_blocked(profile):
+            self.blocks_made.filter(blocker=self, blocked=profile).first().delete()
 
 
 class Invite(models.Model):
@@ -44,3 +64,12 @@ class Invite(models.Model):
         self.invitee.friends.add(self.invited)
         self.invited.friends.add(self.invitee)
         self.delete()
+
+
+class Block(models.Model):
+
+    blocker = models.ForeignKey(Profile, related_name="blocks_made")
+    blocked = models.ForeignKey(Profile, related_name="blocks_received")
+
+    def __str__(self):
+        return "%s blocked %s" % (self.blocker.name, self.blocked.name)
