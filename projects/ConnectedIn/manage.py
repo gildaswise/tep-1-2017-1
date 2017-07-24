@@ -6,9 +6,10 @@ import sys
 """
 Checklist da atividade 1
 [X] - Alterar senha
-[ ] - Recuperar senha
+[X] - Recuperar senha
 [ ] - Conceder privilegio de superuser a outro usuario
 [X] - Bloquear usuario
+[X] - * - Ver lista de pessoas bloqueadas
 [ ] - Incluir postagem
 [ ] - Exibir timeline
 [ ] - Pesquisar usuario
@@ -17,9 +18,9 @@ Checklist da atividade 1
 [ ] - Desativar/ativar proprio perfil
 [ ] - Excluir perfis (superuser)
 [ ] - Excluir postagem (superuser)
+[ ] - * - Usuario poder editar seu perfil
 [ ] - Usuario com foto
 [ ] - Postagens com foto
-[X] - * - Ver lista de pessoas bloqueadas
 """
 
 if __name__ == "__main__":

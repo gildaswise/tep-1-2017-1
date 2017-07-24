@@ -1,5 +1,7 @@
+import uuid as uuid
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
 
 class Profile(models.Model):
@@ -59,6 +61,9 @@ class Profile(models.Model):
         if self.has_blocked(profile):
             self.blocks_made.filter(blocker=self, blocked=profile).first().delete()
 
+    def verify_security(self, security_question, security_answer):
+        return self.security_question == security_question and self.security_answer == security_answer
+
 
 class Invite(models.Model):
 
@@ -81,3 +86,15 @@ class Block(models.Model):
 
     def __str__(self):
         return "%s blocked %s" % (self.blocker.name, self.blocked.name)
+
+
+class Token(models.Model):
+
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
+    until = models.DateTimeField(null=False)
+
+    def __str__(self):
+        return "%s valid until %s" % (self.uuid, self.until)
+
+    def is_valid(self):
+        return self.until > timezone.now()
