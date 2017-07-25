@@ -13,6 +13,7 @@ Checklist da atividade 1
 [X] - Postagens com foto
 [X] - * - Ver lista de pessoas bloqueadas
 [X] - * - Editar postagem
+[X] - * - Ver suas próprias postagens no perfil
 [X] - Exibir timeline
 [ ] - Pesquisar usuario
 [ ] - * - Usuario poder editar seu perfil

@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import View
 from django.utils import timezone
 
+from core.views import get_current_profile
 from timeline.forms import FormPost
 from timeline.models import Post
 
@@ -28,3 +29,8 @@ class ViewNewPost(View):
             return redirect('index')
         else:
             return render(request, 'index.html', {'form': form})
+
+
+def view_post(request, id):
+    post = get_object_or_404(Post, id=id)
+    return render(request, 'post.html', {'current_profile': get_current_profile(request), 'post': post})
