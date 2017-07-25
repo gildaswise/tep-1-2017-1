@@ -5,16 +5,15 @@ from django import forms
 class FormPost(forms.Form):
 
     content = forms.CharField(max_length=256, required=True)
-    image = forms.ImageField()
+    image = forms.ImageField(required=False)
 
     def is_valid_from_form(self):
         return super(FormPost, self).is_valid()
 
     def clean_image(self):
+        if 'image' in self.data and self.data['image'] is not '':
 
-        if 'image' in self.cleaned_data:
-
-            avatar = self.cleaned_data['image']
+            avatar = self.data['image']
 
             try:
                 w, h = get_image_dimensions(avatar)
@@ -40,4 +39,3 @@ class FormPost(forms.Form):
                 pass
 
             return avatar
-

@@ -15,9 +15,11 @@ def get_current_profile(request):
 def index(request):
     current_profile = get_current_profile(request)
     profiles = None
+    posts = None
     if current_profile:
         profiles = Profile.objects.all()
-    return render(request, 'index.html', {"current_profile": current_profile, "core": profiles})
+        posts = current_profile.get_timeline()
+    return render(request, 'index.html', {"current_profile": current_profile, "profiles": profiles, "posts": posts})
 
 
 @login_required

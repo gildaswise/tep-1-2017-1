@@ -62,6 +62,33 @@
 
 </div>
 
+<div class="row">
+
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+
+        {% for post in posts %}
+
+            <div class="media">
+              <div class="media-left media-top">
+                <a href="{% url 'show_profile' post.profile.id %}">
+                  <img class="media-object" src="{{ post.profile.avatar }}">
+                </a>
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">{{post.profile.user.username}}</h4>
+                <h5>{{post.content}}</h5>
+                <h6 class="pull-right">{{post.edited_at}}</h6>
+              </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
+    <div class="col-md-3"></div>
+
+</div>
+
 {% endif %}
 
 {% endblock %}

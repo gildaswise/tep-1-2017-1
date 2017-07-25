@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
+from timeline.models import Post
+
 
 class Profile(models.Model):
 
@@ -64,6 +66,15 @@ class Profile(models.Model):
 
     def verify_security(self, security_question, security_answer):
         return self.security_question == security_question and self.security_answer == security_answer
+
+    def get_posts(self):
+        return Post.objects.filter(profile=self, is_visible=True).distinct()[:10:1]
+
+    def get_timeline(self):
+        main_list = self.get_posts()
+        for friend in self.friends.all():
+            main_list = (main_list | friend.get_posts()).distinct().order_by('-created_at')
+        return main_list
 
 
 class Invite(models.Model):

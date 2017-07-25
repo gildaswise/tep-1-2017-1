@@ -17,8 +17,8 @@
         {% if current_profile %}
             <li><a href="{% url 'index' %}">Home</a></li>
             <li><a href="{% url 'show_profile' current_profile.pk %}"><b>{{ current_profile.name }}</b></a></li>
-            <li><a href="{% url 'invites' %}">Requests ({{ current_profile.invites_received.count }})</a></li>
-            <li><a href="{% url 'friends' %}">Friends ({{ current_profile.friends.count }})</a></li>
+        <li><a href="{% url 'invites' %}">Requests <span class="badge">{{ current_profile.invites_received.count }}</span></a></li>
+        <li><a href="{% url 'friends' %}">Friends <span class="badge">{{ current_profile.friends.count }}</span></a></li>
             <li><a href="{% url 'logout' %}">Logout</a></li>
         {% else %}
             <li><a href="{% url 'login' %}"><b>Login</b></a></li>

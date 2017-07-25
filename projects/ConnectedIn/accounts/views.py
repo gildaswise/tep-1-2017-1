@@ -1,14 +1,12 @@
-from django.contrib.auth.models import User
-from django.views.generic.base import View
-from django.contrib import messages
+from datetime import datetime, timedelta
+
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
-from datetime import datetime, timedelta
-from django.utils import timezone, timesince
+from django.views.generic.base import View
 
-from core.models import Profile, Token
 from accounts.forms import *
+from core.models import Token
 
 
 class ViewRegisterUser(View):
