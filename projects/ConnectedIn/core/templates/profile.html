@@ -1,16 +1,37 @@
 {% extends 'default.html' %}
 {% block content %}
 
-<div class="row">
-    <div class="col-md-4 col-xs-6">
-        <h2>{{profile.name}}</h2>
+<div class="row" style="margin-top: 1em;">
+    <div class="col-md-8 col-xs-9">
+        <div class="media">
+            <div class="media-left media-middle">
+                <img class="media-object" src="{{ profile.avatar.url }}" width="128" height="128" style="border-radius: 4px;">
+            </div>
+            <div class="media-body">
+                <div class="media-heading">
+                    <h2>{{profile.name}}</h2>
+                </div>
+                <address>
+                    <strong>{{profile.business}}</strong><br/>
+                    Tel: {{profile.phone}}<br/>
+                    <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+                </address>
+                {% if profile.pk is current_profile.pk %}
+                {% elif is_friend %}
+                  <div class="well well-sm">You already have {{profile.name}} in your friend list!</div>
+                {% elif is_blocked_by %}
+                  <div class="well well-sm">You are blocked by this profile :/</div>
+                {% endif %}
+            </div>
+        </div>
     </div>
-    <div class="col-md-8 col-xs-12">
-        <div class="dropdown pull-right" style="margin-top: 1.5em;">
+    <div class="col-md-4 col-xs-3">
+      <div class="pull-right">
+        <div class="dropdown" style="margin-top: 1.5em;">
           <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            Options  <span class="caret"></span>
+            <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+          <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
             {% if profile.pk is current_profile.pk %}
               <li><a href="#">Update profile</a></li>
               <li><a href="#">Update profile picture</a></li>
@@ -35,23 +56,35 @@
             {% endif %}
           </ul>
         </div>
+      </div>
     </div>
 </div>
 
+<hr/>
+
 <div class="row">
-    <div class="col-xs-12 col-md-8">
-        <address>
-            <strong>{{profile.business}}</strong><br/>
-            Tel: {{profile.phone}}<br/>
-            <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
-        </address>
-        {% if profile.pk is current_profile.pk %}
-        {% elif is_friend %}
-          <div class="well well-sm">You already have {{profile.name}} in your friend list!</div>
-        {% elif is_blocked_by %}
-          <div class="well well-sm">You are blocked by this profile :/</div>
-        {% endif %}
+
+    <div class="col-md-12">
+
+        {% for post in profile.get_posts %}
+
+            <div class="media card-border">
+              <div class="media-left media-top">
+                <a href="{% url 'show_profile' post.profile.id %}">
+                  <img class="media-object" src="{{ post.profile.avatar.url }}" width="64" height="64" style="border-radius: 4px;">
+                </a>
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">@{{post.profile.user.username}}</h4>
+                <h5>{{post.content}}</h5>
+                <h6 class="pull-right">{{post.edited_at}}</h6>
+              </div>
+            </div>
+
+        {% endfor %}
+
     </div>
+
 </div>
 
 {% endblock %}

@@ -41,9 +41,9 @@
             <div class="input-group">
               <input type="text" id="field_name" name="content" class="form-control" placeholder="Write something new!" required >
               <div class="input-group-btn">
-                  <label for="field_image"><i class="mdi mdi-image btn btn-default" style="border-radius: 0;"></i></label>
+                  <label for="field_image"><i class="mdi mdi-image btn btn-default no-border"></i></label>
                   <button class="btn btn-default" type="submit" value="Submit"><i class="mdi mdi-send"></i></button>
-                  <input id="field_image" type="file" class="image-upload" name="image" style="display:none;">
+                  <input id="field_image" type="file" class="image-upload" name="image">
               </div>
             </div>
 
@@ -65,19 +65,18 @@
 
 <div class="row">
 
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         {% for post in posts %}
 
-            <div class="media">
+            <div class="media card-border">
               <div class="media-left media-top">
                 <a href="{% url 'show_profile' post.profile.id %}">
-                  <img class="media-object" src="{{ post.profile.avatar.url }}" width="64" height="64">
+                  <img class="media-object" src="{{ post.profile.avatar.url }}" width="64" height="64" style="border-radius: 4px;">
                 </a>
               </div>
               <div class="media-body">
-                <h4 class="media-heading">{{post.profile.user.username}}</h4>
+                <h4 class="media-heading">@{{post.profile.user.username}}</h4>
                 <h5>{{post.content}}</h5>
                 <h6 class="pull-right">{{post.edited_at}}</h6>
               </div>
@@ -86,7 +85,6 @@
         {% endfor %}
 
     </div>
-    <div class="col-md-3"></div>
 
 </div>
 

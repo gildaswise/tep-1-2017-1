@@ -68,13 +68,13 @@ class Profile(models.Model):
         return self.security_question == security_question and self.security_answer == security_answer
 
     def get_posts(self):
-        return Post.objects.filter(profile=self, is_visible=True).distinct()[:10:1]
+        return Post.objects.filter(profile=self, is_visible=True).distinct().order_by('-created_at')
 
     def get_timeline(self):
         main_list = self.get_posts()
         for friend in self.friends.all():
-            main_list = (main_list | friend.get_posts()).distinct().order_by('-created_at')
-        return main_list
+            main_list = (main_list | friend.get_posts()).distinct()
+        return main_list[:10:1]
 
 
 class Invite(models.Model):
