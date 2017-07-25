@@ -7,20 +7,21 @@ import sys
 Checklist da atividade 1
 [X] - Alterar senha
 [X] - Recuperar senha
-[ ] - Conceder privilegio de superuser a outro usuario
 [X] - Bloquear usuario
+[X] - Incluir postagem
+[X] - Usuario com foto
+[X] - Postagens com foto
 [X] - * - Ver lista de pessoas bloqueadas
-[ ] - Incluir postagem
+[X] - * - Editar postagem
 [ ] - Exibir timeline
 [ ] - Pesquisar usuario
-[ ] - Novo layout
-[ ] - Pagina para superuser
+[ ] - * - Usuario poder editar seu perfil
 [ ] - Desativar/ativar proprio perfil
+[ ] - Novo layout
+[ ] - Conceder privilegio de superuser a outro usuario
+[ ] - Pagina para superuser
 [ ] - Excluir perfis (superuser)
 [ ] - Excluir postagem (superuser)
-[ ] - * - Usuario poder editar seu perfil
-[ ] - Usuario com foto
-[ ] - Postagens com foto
 """
 
 if __name__ == "__main__":

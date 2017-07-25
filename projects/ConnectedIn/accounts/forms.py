@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.core.files.images import get_image_dimensions
+
 from core.models import Profile
 
 
@@ -61,10 +63,41 @@ class FormRegisterUser(forms.Form):
     name = forms.CharField(max_length=64, required=True)
     email = forms.EmailField(required=True)
     password = forms.PasswordInput()
+    avatar = forms.ImageField()
     phone = forms.CharField(max_length=12, required=True)
     business = forms.CharField(max_length=32, required=True)
     security_question = forms.ChoiceField(choices=Profile.DEFAULT_QUESTIONS, required=True)
     security_answer = forms.CharField(max_length=64, required=True)
+
+    # https://stackoverflow.com/questions/6396442/add-image-avatar-to-users-in-django
+    def clean_avatar(self):
+        print(self.cleaned_data)
+        avatar = self.cleaned_data['avatar']
+
+        try:
+            w, h = get_image_dimensions(avatar)
+
+            # validate dimensions
+            max_width = max_height = 500
+            if w > max_width or h > max_height:
+                raise forms.ValidationError(
+                    u'Please use an image that is '
+                    '%s x %s pixels or smaller.' % (max_width, max_height))
+
+            # validate content type
+            main, sub = avatar.content_type.split('/')
+            if not (main == 'image' and sub in ['jpeg', 'jpg', 'png']):
+                raise forms.ValidationError(u'Please use a JPEG, '
+                                            'JPG or PNG image.')
+
+        except AttributeError:
+            """
+            Handles case when we are updating the user profile
+            and do not supply a new avatar
+            """
+            pass
+
+        return avatar
 
     def is_valid_from_form(self):
         return super(FormRegisterUser, self).is_valid()

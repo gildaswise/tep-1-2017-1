@@ -26,6 +26,42 @@
         </div>
     </div>
 </div>
+
+{% else %}
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        <form class="form-signin" action="{% url 'new_post' %}" method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="input-group">
+              <input type="text" id="field_name" name="content" class="form-control" placeholder="Write something new!" required >
+              <div class="input-group-btn">
+                  <label for="field_image"><i class="mdi mdi-image btn btn-default"></i></label>
+                  <button class="btn btn-default" type="submit" value="Submit"><i class="mdi mdi-send"></i></button>
+                  <input id="field_image" type="file" class="image-upload" name="image" hidden="hidden">
+              </div>
+            </div>
+
+            <hr />
+
+            {% if form.errors %}
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                {{ form.errors }}
+            </div>
+            <hr/>
+            {% endif %}
+
+        </form>
+
+    </div>
+
+</div>
+
 {% endif %}
 
 {% endblock %}

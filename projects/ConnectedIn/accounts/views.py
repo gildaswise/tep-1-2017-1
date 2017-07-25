@@ -20,19 +20,21 @@ class ViewRegisterUser(View):
         return render(request, self.template, {'form': form})
 
     def post(self, request, *args, **kwargs):
-        form = FormRegisterUser(request.POST)
+        form = FormRegisterUser(request.POST, request.FILES)
         if form.is_valid():
             data = form.data
             user = User.objects.create_user(
                 username=data['name'].replace(" ", "_").lower(),
                 email=data['email'],
                 password=data['password'])
+            avatar = form.clean_avatar()
             profile = Profile.objects.create(
                 name=data['name'],
                 phone=data['phone'],
                 business=data['business'],
                 security_question=data['security_question'],
                 security_answer=data['security_answer'],
+                avatar=avatar,
                 user=user)
             profile.save()
             return redirect('login')

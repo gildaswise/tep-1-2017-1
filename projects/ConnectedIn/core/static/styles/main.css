@@ -1,5 +1,9 @@
 @CHARSET "UTF-8";
 
+* {
+  border-radius: 0 !important;
+}
+
 /* Space out content a bit */
 body {
   padding-top: 20px;
@@ -64,6 +68,13 @@ a.list-group-item > div {
   display: table-cell;
   vertical-align: middle;
   float:none;
+}
+
+.image-upload {
+    display: none;
+    visibility: hidden;
+    width: 0;
+    height: 0;
 }
 
 @media screen and (min-width: 768px) {
