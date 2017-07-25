@@ -1,4 +1,5 @@
 {% extends 'default.html' %}
+{% load staticfiles %}
 {% block content %}
 
 {% if current_profile.user.is_superuser %}
@@ -27,7 +28,7 @@
     </div>
 </div>
 
-{% else %}
+{% elif current_profile %}
 
 <div class="row">
 
@@ -40,9 +41,9 @@
             <div class="input-group">
               <input type="text" id="field_name" name="content" class="form-control" placeholder="Write something new!" required >
               <div class="input-group-btn">
-                  <label for="field_image"><i class="mdi mdi-image btn btn-default"></i></label>
+                  <label for="field_image"><i class="mdi mdi-image btn btn-default" style="border-radius: 0;"></i></label>
                   <button class="btn btn-default" type="submit" value="Submit"><i class="mdi mdi-send"></i></button>
-                  <input id="field_image" type="file" class="image-upload" name="image" hidden="hidden">
+                  <input id="field_image" type="file" class="image-upload" name="image" style="display:none;">
               </div>
             </div>
 
@@ -72,7 +73,7 @@
             <div class="media">
               <div class="media-left media-top">
                 <a href="{% url 'show_profile' post.profile.id %}">
-                  <img class="media-object" src="{{ post.profile.avatar }}">
+                  <img class="media-object" src="{{ post.profile.avatar.url }}" width="64" height="64">
                 </a>
               </div>
               <div class="media-body">
