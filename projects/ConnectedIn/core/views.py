@@ -17,7 +17,7 @@ def index(request):
     profiles = None
     if current_profile:
         profiles = Profile.objects.all()
-    return render(request, 'index.html', {"current_profile": current_profile, "profiles": profiles})
+    return render(request, 'index.html', {"current_profile": current_profile, "core": profiles})
 
 
 @login_required

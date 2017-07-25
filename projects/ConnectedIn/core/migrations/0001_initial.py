@@ -37,28 +37,28 @@ class Migration(migrations.Migration):
                 ('business', models.CharField(max_length=32)),
                 ('security_question', models.CharField(choices=[(1, "What is your pet's name?"), (2, 'Where were you born?'), (3, 'What is your main nickname?')], default=1, max_length=1)),
                 ('security_answer', models.CharField(max_length=64)),
-                ('friends', models.ManyToManyField(blank=True, related_name='_profile_friends_+', to='profiles.Profile')),
+                ('friends', models.ManyToManyField(blank=True, related_name='_profile_friends_+', to='core.Profile')),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='profile', to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.AddField(
             model_name='invite',
             name='invited',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='invites_received', to='profiles.Profile'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='invites_received', to='core.Profile'),
         ),
         migrations.AddField(
             model_name='invite',
             name='invitee',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='invites_made', to='profiles.Profile'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='invites_made', to='core.Profile'),
         ),
         migrations.AddField(
             model_name='block',
             name='blocked',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='blocks_received', to='profiles.Profile'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='blocks_received', to='core.Profile'),
         ),
         migrations.AddField(
             model_name='block',
             name='blocker',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='blocks_made', to='profiles.Profile'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='blocks_made', to='core.Profile'),
         ),
     ]

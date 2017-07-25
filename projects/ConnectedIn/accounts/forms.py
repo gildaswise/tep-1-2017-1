@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from profiles.models import Profile
+from core.models import Profile
 
 
 class FormForgotPasswordVerification(forms.Form):

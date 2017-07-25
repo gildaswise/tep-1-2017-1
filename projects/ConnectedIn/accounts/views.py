@@ -7,8 +7,8 @@ from django.shortcuts import render, redirect
 from datetime import datetime, timedelta
 from django.utils import timezone, timesince
 
-from profiles.models import Profile, Token
-from users.forms import *
+from core.models import Profile, Token
+from accounts.forms import *
 
 
 class ViewRegisterUser(View):
