@@ -10,9 +10,9 @@ class FormPost(forms.Form):
     def is_valid_from_form(self):
         return super(FormPost, self).is_valid()
 
-    def clean_image(self):
-        if 'image' in self.cleaned_data and (self.cleaned_data['image'] is not None or self.cleaned_data['image'] is not ''):
-            image = self.cleaned_data['image']
+    def verify_image(self, request):
+        if 'image' in request.FILES and (request.FILES['image'] is not None or request.FILES['image'] is not ''):
+            image = request.FILES['image']
             try:
                 main, sub = image.content_type.split('/')
                 if not (main == 'image' and sub in ['jpeg', 'jpg', 'png']):

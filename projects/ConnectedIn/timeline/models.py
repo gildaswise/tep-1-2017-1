@@ -22,10 +22,9 @@ class Post(models.Model):
             to_str += " and edit at %s" % self.edited_at
         return to_str
 
-    def edit(self, new_content, new_image):
+    def edit(self, new_content):
         if self.is_editable():
             self.content = new_content
-            self.image = new_image
             self.edited_at = timezone.now()
             self.save(force_update=True)
             return True
@@ -45,4 +44,4 @@ class Post(models.Model):
         self.save()
 
     def is_editable(self):
-        return (self.created_at + timedelta(seconds=59)) > timezone.now()
+        return (self.created_at + timedelta(seconds=59)) > timezone.now() and not self.image

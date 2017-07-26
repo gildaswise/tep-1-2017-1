@@ -3,16 +3,14 @@
 
 {% block js %}
 
-    function saveTweet() {
+    function savePost() {
 
         var text = document.getElementById('text-input').value;
-        var image = document.getElementById('image-input').value;
 
         $.ajax({
                 url: "{% url 'edit_post' post.id %}",
                 data: {
                     'new_content': text,
-                    'new_image': image,
                 },
                 dataType: 'json',
                 success: function (data) {
@@ -20,6 +18,7 @@
                         $.get({
                             url: "{% url 'view_post' post.id %}"
                         });
+                        $("#editable-content").text(text);
                     } else {
                         cancelEdit();
                         $("#alert-message").show();
@@ -36,7 +35,7 @@
         return true;
     };
 
-    function editTweet() {
+    function editPost() {
         $("#editable-content").hide();
         $("#hidden-edit").show();
         return true;
@@ -77,7 +76,9 @@
         </div>
         <div id="editable-content" class="inline-editable">
             <p>{{post.content|linebreaksbr}}</p>
-            <img src="{{post.image.url}}"/>
+            {% if post.image %}
+              <img src="{{post.image.url}}"/>
+            {% endif %}
         </div>
         <div id="hidden-edit" style="display:none">
           <form class="inline-editor" method="POST" enctype="multipart/form-data">
@@ -85,10 +86,8 @@
             <div class="input-group">
               <input type="text" id="text-input" class="form-control" maxlength="256" placeholder="Write something new!" value="{{post.content}}" required >
               <div class="input-group-btn">
-                  <label for="image-input"><i class="mdi mdi-image btn btn-default no-border"></i></label>
                   <button class="btn btn-danger" onclick="cancelEdit();"><i class="mdi mdi-close"></i></button>
-                  <button id="submit" class="btn btn-default" type="submit" value="Submit" onclick="saveTweet();"><i class="mdi mdi-send"></i></button>
-                  <input id="image-input" type="file" class="image-upload" name="image">
+                  <button id="submit" class="btn btn-default" type="submit" value="Submit" onclick="savePost();"><i class="mdi mdi-send"></i></button>
               </div>
             </div>
           </form>
@@ -111,7 +110,7 @@
         {% endif %}
         {% if post.is_editable %}
           <li role="separator" class="divider"></li>
-          <li><a onclick="javascript:editTweet();">Edit</a></li>
+          <li><a onclick="javascript:editPost();">Edit</a></li>
         {% endif %}
         </ul>
       </div>
@@ -125,7 +124,7 @@
 <div id="alert-message" class="row" style="display:none">
   <div class="alert alert-warning alert-dismissible" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <strong>Too late!</strong> You can't edit this tweet now, your 1 minute expired!
+    <strong>Too late!</strong> You can't edit this post now, your 1 minute just expired!
   </div>
 </div>
 

@@ -19,7 +19,7 @@ class ViewNewPost(View):
         if form.is_valid():
             data = form.cleaned_data
             profile = request.user.profile
-            image = request.FILES['image']
+            image = form.verify_image(request=request)
             post = Post.objects.create(
                 profile=profile,
                 content=data['content'],
@@ -40,7 +40,6 @@ def view_post(request, id):
 def edit_post(request, id):
     post = get_object_or_404(Post, id=id)
     new_content = request.GET.get('new_content', None)
-    new_image = request.GET.get('new_image', None)
-    is_edited = post.edit(new_content, new_image)
+    is_edited = post.edit(new_content)
     data = {'is_edited': is_edited}
     return JsonResponse(data)
