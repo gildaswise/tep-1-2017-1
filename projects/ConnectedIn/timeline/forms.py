@@ -11,8 +11,8 @@ class FormPost(forms.Form):
         return super(FormPost, self).is_valid()
 
     def clean_image(self):
-        if 'image' in self.data and self.data['image'] is not '':
-            image = self.data['image']
+        if 'image' in self.cleaned_data and (self.cleaned_data['image'] is not None or self.cleaned_data['image'] is not ''):
+            image = self.cleaned_data['image']
             try:
                 main, sub = image.content_type.split('/')
                 if not (main == 'image' and sub in ['jpeg', 'jpg', 'png']):

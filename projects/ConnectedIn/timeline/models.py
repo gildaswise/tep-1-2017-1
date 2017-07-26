@@ -8,7 +8,7 @@ class Post(models.Model):
 
     profile = models.ForeignKey('core.Profile', on_delete=CASCADE, related_name='posts')
     content = models.CharField(max_length=256, blank=True, null=False)
-    image = models.ImageField(upload_to='posts', null=True)
+    image = models.ImageField(upload_to='posts/', null=True)
     created_at = models.DateTimeField(null=False)
     edited_at = models.DateTimeField(null=True)
     is_visible = models.BooleanField(default=True, null=False)

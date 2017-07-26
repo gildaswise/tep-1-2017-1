@@ -71,7 +71,6 @@ class FormRegisterUser(forms.Form):
 
     # https://stackoverflow.com/questions/6396442/add-image-avatar-to-users-in-django
     def clean_avatar(self):
-        print(self.cleaned_data)
         avatar = self.cleaned_data['avatar']
 
         try:

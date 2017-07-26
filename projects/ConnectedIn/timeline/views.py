@@ -16,11 +16,10 @@ class ViewNewPost(View):
 
     def post(self, request, *args, **kwargs):
         form = FormPost(request.POST, request.FILES)
-        data = form.data
-        print(data)
-        image = form.clean_image()
         if form.is_valid():
+            data = form.cleaned_data
             profile = request.user.profile
+            image = request.FILES['image']
             post = Post.objects.create(
                 profile=profile,
                 content=data['content'],
