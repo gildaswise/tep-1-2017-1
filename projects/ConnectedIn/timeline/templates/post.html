@@ -1,12 +1,69 @@
 {% extends 'default.html' %}
 {% load staticfiles %}
 
+{% block js %}
+
+    function saveTweet() {
+
+        var text = document.getElementById('text-input').value;
+        var image = document.getElementById('image-input').value;
+
+        $.ajax({
+                url: "{% url 'edit_post' post.id %}",
+                data: {
+                    'new_content': text,
+                    'new_image': image,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.is_edited) {
+                        $.get({
+                            url: "{% url 'view_post' post.id %}"
+                        });
+                    } else {
+                        cancelEdit();
+                        $("#alert-message").show();
+                    }
+                }
+        });
+
+        return true;
+    };
+
+    function cancelEdit() {
+        $("#hidden-edit").hide();
+        $("#editable-content").show();
+        return true;
+    };
+
+    function editTweet() {
+        $("#editable-content").hide();
+        $("#hidden-edit").show();
+        return true;
+    };
+
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+    function csrfSafeMethod(method) {
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    };
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+{% endblock %}
+
 {% block content %}
 
 <div class="row card-border">
   <div class="col-md-11 col-xs-11">
     <div class="media">
-      <div class="media-left media-middle">
+      <div class="media-left media-middle" style="padding-right: 1.5em;">
         <a href="{% url 'show_profile' post.profile.id %}">
           <img class="media-object" src="{{ post.profile.avatar.url }}" width="128" height="128" style="border-radius: 4px;">
         </a>
@@ -20,7 +77,24 @@
                 {{post.edited_at}}
             </a></h6>
         </div>
-        <h5>{{post.content}}</h5>
+        <div id="editable-content" class="inline-editable">
+            <p>{{post.content|linebreaksbr}}</p>
+            <img src="{{post.image}}"/>
+        </div>
+        <div id="hidden-edit" style="display:none">
+          <form class="inline-editor" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-group">
+              <input type="text" id="text-input" class="form-control" maxlength="256" placeholder="Write something new!" value="{{post.content}}" required >
+              <div class="input-group-btn">
+                  <label for="image-input"><i class="mdi mdi-image btn btn-default no-border"></i></label>
+                  <button class="btn btn-danger" onclick="cancelEdit();"><i class="mdi mdi-close"></i></button>
+                  <button id="submit" class="btn btn-default" type="submit" value="Submit" onclick="saveTweet();"><i class="mdi mdi-send"></i></button>
+                  <input id="image-input" type="file" class="image-upload" name="image">
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -32,11 +106,28 @@
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
-         <li><a>None for now</a></li>
+        {% if current_profile.id == post.profile.id %}
+          <li><a href="#">None for now</a></li>
+        {% else %}
+          <li><a>None for now</a></li>
+        {% endif %}
+        {% if post.is_editable %}
+          <li role="separator" class="divider"></li>
+          <li><a onclick="javascript:editTweet();">Edit</a></li>
+        {% endif %}
         </ul>
       </div>
       <br/>
     </div>
+  </div>
+</div>
+
+<hr/>
+
+<div id="alert-message" class="row" style="display:none">
+  <div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Too late!</strong> You can't edit this tweet now, your 1 minute expired!
   </div>
 </div>
 

@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.db import models
 from django.db.models import CASCADE
 from django.utils import timezone
@@ -22,10 +23,14 @@ class Post(models.Model):
         return to_str
 
     def edit(self, new_content, new_image):
-        self.content = new_content
-        self.image = new_image
-        self.edited_at = timezone.now()
-        self.save()
+        if self.is_editable():
+            self.content = new_content
+            self.image = new_image
+            self.edited_at = timezone.now()
+            self.save(force_update=True)
+            return True
+        else:
+            return False
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
@@ -38,3 +43,6 @@ class Post(models.Model):
     def delete(self, using=None, keep_parents=False):
         self.is_visible = False
         self.save()
+
+    def is_editable(self):
+        return (self.created_at + timedelta(seconds=59)) > timezone.now()
