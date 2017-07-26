@@ -37,10 +37,10 @@
               <li><a href="#">Update profile picture</a></li>
               <li><a href="{% url 'change_password' %}">Change password</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="#">Deactivate account</a></li>
-              <li><a href="#">Delete account</a></li>
-              <li role="separator" class="divider"></li>
               <li><a href="{% url 'blocks' %}">View profiles blocked</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="{% url 'deactivate_profile' profile.id %}">Deactivate account</a></li>
+              <li><a href="{% url 'remove_profile' profile.id %}">Delete account</a></li>
             {% elif is_friend %}
               <li><a href="{% url 'remove_a_friend' profile.id %}">Remove friend</a></li>
               <li><a href="{% url 'block' profile.id %}">Block</a></li>
@@ -53,6 +53,11 @@
               <li><a href="{% url 'block' profile.id %}">Block</a></li>
             {% else %}
               <li><a>None for now</a></li>
+            {% endif %}
+            {% if current_profile.user.is_superuser and not profile.user.is_superuser %}
+              <li><a href="{% url 'toggle_superuser' profile.id %}">Toggle superuser <i class="mdi mdi-close"></i></a></li>
+            {% elif current_profile.user.is_superuser and profile.user.is_superuser %}
+              <li><a href="{% url 'toggle_superuser' profile.id %}">Toggle superuser <i class="mdi mdi-check"></i></a></li>
             {% endif %}
           </ul>
         </div>

@@ -37,6 +37,12 @@ def view_post(request, id):
     return render(request, 'post.html', {'current_profile': get_current_profile(request), 'post': post})
 
 
+def delete_post(request, id):
+    post = get_object_or_404(Post, id=id)
+    post.delete()
+    return redirect('index')
+
+
 def edit_post(request, id):
     post = get_object_or_404(Post, id=id)
     new_content = request.GET.get('new_content', None)

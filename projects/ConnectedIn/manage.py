@@ -15,14 +15,14 @@ Checklist da atividade 1
 [X] - * - Editar postagem
 [X] - * - Ver suas próprias postagens no perfil
 [X] - Exibir timeline
+[X] - Excluir perfis (superuser)
+[X] - Excluir postagem (superuser)
+[X] - Desativar/ativar proprio perfil
+[X] - Pagina para superuser
+[X] - Conceder privilegio de superuser a outro usuario
 [ ] - Pesquisar usuario
 [ ] - * - Usuario poder editar seu perfil
-[ ] - Desativar/ativar proprio perfil
 [ ] - Novo layout
-[ ] - Conceder privilegio de superuser a outro usuario
-[ ] - Pagina para superuser
-[ ] - Excluir perfis (superuser)
-[ ] - Excluir postagem (superuser)
 """
 
 if __name__ == "__main__":

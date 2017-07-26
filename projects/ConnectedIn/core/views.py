@@ -26,14 +26,17 @@ def index(request):
 def show_profile(request, id):
     current_profile = get_current_profile(request)
     pfl = Profile.objects.get(id=id)
-    return render(request, 'profile.html', {
-        "current_profile": current_profile,
-        "is_friend": current_profile.is_friend_of(pfl),
-        "has_invited": current_profile.has_invited(pfl),
-        "is_blocked_by": current_profile.is_blocked_by(pfl),
-        "has_blocked": current_profile.has_blocked(pfl),
-        "profile": pfl,
-    })
+    if pfl.is_visible:
+        return render(request, 'profile.html', {
+            "current_profile": current_profile,
+            "is_friend": current_profile.is_friend_of(pfl),
+            "has_invited": current_profile.has_invited(pfl),
+            "is_blocked_by": current_profile.is_blocked_by(pfl),
+            "has_blocked": current_profile.has_blocked(pfl),
+            "profile": pfl,
+        })
+    else:
+        return redirect('index')
 
 
 @login_required
@@ -110,3 +113,35 @@ def remove_block(request, id):
     previous_page = 'blocks' if ('blocks' in request.META['HTTP_REFERER']) else 'show_profile'
     current_profile.remove_block(pfl)
     return redirect(previous_page) if previous_page == 'blocks' else redirect(previous_page, id=id)
+
+@login_required
+def toggle_superuser(request, id):
+    current_profile = get_current_profile(request)
+    pfl = Profile.objects.get(id=id)
+    if current_profile.user.is_superuser:
+        is_superuser = pfl.user.is_superuser
+        pfl.user.is_superuser = not is_superuser
+        print("%s is now superuser (%s)" % (pfl, pfl.user.is_superuser))
+        pfl.user.save()
+    return redirect('show_profile', id=id)
+
+
+@login_required
+def deactivate_profile(request, id):
+    current_profile = get_current_profile(request)
+    if current_profile is Profile and (current_profile.id == id or current_profile.user.is_superuser):
+        pfl = Profile.objects.get(id=id)
+        pfl.is_visible = False
+        pfl.save()
+        return redirect('logout')
+    return redirect('index')
+
+
+@login_required
+def remove_profile(request, id):
+    current_profile = get_current_profile(request)
+    if current_profile is Profile and (current_profile.id == id or current_profile.user.is_superuser):
+        pfl = Profile.objects.get(id=id)
+        pfl.delete()
+        return redirect('logout')
+    return redirect('index')

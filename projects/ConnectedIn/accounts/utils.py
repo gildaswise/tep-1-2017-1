@@ -7,6 +7,9 @@ class EmailBackend(ModelBackend):
         try:
             user = User.objects.get(email=username)
             if user is not None and user.check_password(password):
+                if not user.profile.is_visible:
+                    user.profile.is_visible = True
+                    user.profile.save()
                 return user
         except User.DoesNotExist:
             return None

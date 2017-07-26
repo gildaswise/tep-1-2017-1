@@ -22,6 +22,7 @@ class Profile(models.Model):
     security_question = models.CharField(max_length=1, null=False, choices=DEFAULT_QUESTIONS, default=1)
     security_answer = models.CharField(max_length=64, null=False)
     friends = models.ManyToManyField('self', blank=True)
+    is_visible = models.BooleanField(default=True)
 
     def __str__(self):
         return "%s" % self.name
