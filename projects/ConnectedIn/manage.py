@@ -11,9 +11,6 @@ Checklist da atividade 1
 [X] - Incluir postagem
 [X] - Usuario com foto
 [X] - Postagens com foto
-[X] - * - Ver lista de pessoas bloqueadas
-[X] - * - Editar postagem
-[X] - * - Ver suas próprias postagens no perfil
 [X] - Exibir timeline
 [X] - Excluir perfis (superuser)
 [X] - Excluir postagem (superuser)
@@ -22,7 +19,11 @@ Checklist da atividade 1
 [X] - Conceder privilegio de superuser a outro usuario
 [X] - Novo layout
 [X] - Pesquisar usuario
-[ ] - * - Usuario poder editar seu perfil
+[X] - * - Ver lista de pessoas bloqueadas
+[X] - * - Editar postagem
+[X] - * - Ver suas próprias postagens no perfil
+[X] - * - Usuario poder editar suas informações do perfil
+[X] - * - Usuario poder atualizar seu avatar
 """
 
 if __name__ == "__main__":

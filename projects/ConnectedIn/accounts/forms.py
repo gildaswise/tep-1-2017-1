@@ -58,6 +58,52 @@ class FormForgotPasswordNew(forms.Form):
         return valid
 
 
+class FormEditUser(forms.Form):
+
+    name = forms.CharField(max_length=64, required=True)
+    username = forms.CharField(max_length=64, required=True)
+    avatar = forms.ImageField(required=False)
+    phone = forms.CharField(max_length=12, required=True)
+    business = forms.CharField(max_length=32, required=True)
+
+    # https://stackoverflow.com/questions/6396442/add-image-avatar-to-users-in-django
+    def verify_avatar(self, request):
+        if 'avatar' in request.FILES and (request.FILES['avatar'] is not None or request.FILES['avatar'] is not ''):
+
+            avatar = self.cleaned_data['avatar']
+
+            try:
+                w, h = get_image_dimensions(avatar)
+
+                # validate dimensions
+                max_width = max_height = 500
+                if w > max_width or h > max_height:
+                    raise forms.ValidationError(
+                        u'Please use an image that is '
+                        '%s x %s pixels or smaller.' % (max_width, max_height))
+
+                # validate content type
+                main, sub = avatar.content_type.split('/')
+                if not (main == 'image' and sub in ['jpeg', 'jpg', 'png']):
+                    raise forms.ValidationError(u'Please use a JPEG, '
+                                                'JPG or PNG image.')
+
+            except AttributeError:
+                """
+                Handles case when we are updating the user profile
+                and do not supply a new avatar
+                """
+                pass
+
+            return avatar
+        else:
+            return None
+
+    def is_valid_from_form(self):
+        return super(FormEditUser, self).is_valid()
+
+
+
 class FormRegisterUser(forms.Form):
 
     name = forms.CharField(max_length=64, required=True)

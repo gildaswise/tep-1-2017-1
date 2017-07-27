@@ -1,0 +1,54 @@
+{% extends 'user_default.html' %}
+
+{% block extra-title %} - Edit your profile {% endblock %}
+
+{% block content %}
+
+<form class="form-signin" action="{% url 'edit' %}" method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="field_name">Name</label>
+        <input type="text" id="field_name" name="name" class="form-control" placeholder="Someone" required value="{{profile.name}}">
+    </div>
+
+    <div class="form-group">
+        <label for="field_name">Username</label>
+        <input type="text" id="field_username" name="username" class="form-control" placeholder="Someone" required value="{{profile.username}}">
+    </div>
+
+    <div class="form-group">
+        <label for="field_avatar">Avatar</label>
+        <input id="field_avatar" type="file" class="form-control" name="avatar">
+    </div>
+
+    <hr />
+
+    <div class="form-group">
+        <label for="field_phone">Phone</label>
+        <input type="text" id="field_phone" name="phone" class="form-control" placeholder="(99) 99999-9999" value="{{profile.phone}}">
+    </div>
+    <div class="form-group">
+        <label for="field_business">Business' name</label>
+        <input type="text" id="field_business" name="business" class="form-control" placeholder="Somewhere" value="{{profile.business}}">
+    </div>
+
+    <hr />
+
+    <hr />
+
+    {% if form.errors %}
+    <div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    {{ form.errors }}
+    </div>
+    <hr/>
+    {% endif %}
+
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit">Save</button>
+
+</form>
+
+{% endblock %}

@@ -36,6 +36,10 @@ class Profile(models.Model):
     def email(self):
         return self.user.email
 
+    @property
+    def username(self):
+        return self.user.username
+
     def invite(self, invited_profile):
         new_invite = Invite(inviter=self, invited=invited_profile)
         new_invite.save()

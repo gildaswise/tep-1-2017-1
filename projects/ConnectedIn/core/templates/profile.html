@@ -33,8 +33,7 @@
           </button>
           <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
             {% if profile.pk is current_profile.pk %}
-              <li><a href="#">Update profile</a></li>
-              <li><a href="#">Update profile picture</a></li>
+              <li><a href="{% url 'edit' %}">Update profile</a></li>
               <li><a href="{% url 'change_password' %}">Change password</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="{% url 'blocks' %}">View profiles blocked</a></li>

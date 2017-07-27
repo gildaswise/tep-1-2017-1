@@ -9,6 +9,14 @@ from accounts.forms import *
 from core.models import Token
 
 
+def get_current_profile(request):
+    try:
+        profile = request.user.profile
+        return profile if (isinstance(profile, Profile)) else None
+    except:
+        return None
+
+
 class ViewRegisterUser(View):
 
     template = 'register.html'
@@ -36,6 +44,41 @@ class ViewRegisterUser(View):
                 user=user)
             profile.save()
             return redirect('login')
+        return render(request, self.template, {'form': form})
+
+
+class ViewEditUser(View):
+
+    template = 'edit.html'
+
+    def get(self, request, *args, **kwargs):
+        form = FormEditUser()
+        current_profile = get_current_profile(request)
+        return render(request, self.template, {'form': form, 'profile': current_profile})
+
+    def post(self, request, *args, **kwargs):
+        form = FormEditUser(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.data
+            current_profile = get_current_profile(request)
+            user_exists = User.objects.filter(username=form.data['username']).exclude(id=current_profile.user.id).exists()
+            if user_exists:
+                form.add_error(field="username", error="There's an account with that username already!")
+                return render(request, self.template, {'form': form, 'profile': current_profile})
+            else:
+                current_profile.user.username = data['username']
+                current_profile.user.save()
+                current_profile.name = data['name']
+                current_profile.phone = data['phone']
+                current_profile.business = data['business']
+
+                avatar = form.verify_avatar(request)
+                if avatar is not None:
+                    current_profile.avatar = avatar
+
+                current_profile.save()
+
+                return redirect('show_profile', id=current_profile.id)
         return render(request, self.template, {'form': form})
 
 
