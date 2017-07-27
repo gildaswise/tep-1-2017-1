@@ -56,7 +56,7 @@ def invite_profile(request, id):
     invited_profile = Profile.objects.get(id=id)
     current_profile = get_current_profile(request)
     current_profile.invite(invited_profile)
-    return redirect('view_invites')
+    return redirect('invites')
 
 
 @login_required

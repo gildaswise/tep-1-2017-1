@@ -41,7 +41,7 @@ class Profile(models.Model):
         return self.user.username
 
     def invite(self, invited_profile):
-        new_invite = Invite(inviter=self, invited=invited_profile)
+        new_invite = Invite(invitee=self, invited=invited_profile)
         new_invite.save()
 
     def is_friend_of(self, profile):
