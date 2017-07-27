@@ -74,12 +74,12 @@
             </a></h4>
             <h6>{{post.edited_at}}</h6>
         </div>
-        <div id="editable-content" class="inline-editable">
-            <p>{{post.content|linebreaksbr}}</p>
-            {% if post.image %}
-              <img src="{{post.image.url}}"/>
-            {% endif %}
+        <div class="inline-editable">
+            <p id="editable-content">{{post.content|linebreaksbr}}</p>
         </div>
+        {% if post.image %}
+          <img src="{{post.image.url}}"/>
+        {% endif %}
         <div id="hidden-edit" style="display:none">
           <form class="inline-editor" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
