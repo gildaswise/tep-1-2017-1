@@ -21,7 +21,7 @@ Checklist da atividade 1
 [X] - Pagina para superuser
 [X] - Conceder privilegio de superuser a outro usuario
 [X] - Novo layout
-[ ] - Pesquisar usuario
+[X] - Pesquisar usuario
 [ ] - * - Usuario poder editar seu perfil
 """
 

@@ -1,6 +1,45 @@
 {% extends 'default.html' %}
 {% block content %}
 
+<div class="row">
 
+    <div class="col-md-12">
+
+        {% if profiles %}
+
+            {% for profile in profiles %}
+
+                <div class="media card-border">
+                  <div class="media-left media-middle">
+                    <a href="{% url 'show_profile' profile.id %}">
+                      <img class="media-object" src="{{ profile.avatar.url }}" width="128" height="128" style="border-radius: 4px;">
+                    </a>
+                  </div>
+                  <div class="media-body">
+                    <h4 class="media-heading">{{profile.name}} - <a href="{% url 'show_profile' profile.id %}">@{{profile.user.username}}</a></h4>
+                    <address>
+                      <strong>{{profile.business}}</strong><br/>
+                      Tel: {{profile.phone}}<br/>
+                      <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+                    </address>
+                  </div>
+                </div>
+
+                <hr/>
+
+            {% endfor %}
+
+        {% else %}
+
+        <div class="well well-sm text-center">
+            <h4>We couldn't find anyone with a name or username like <em>{{text}}!</em></h4>
+            <h6>Remember: your profile isn't included in the search!</h6>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
 
 {% endblock %}

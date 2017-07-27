@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.views.generic.base import View
+from django.db.models import Q
 from .models import *
 
 
@@ -114,6 +116,7 @@ def remove_block(request, id):
     current_profile.remove_block(pfl)
     return redirect(previous_page) if previous_page == 'blocks' else redirect(previous_page, id=id)
 
+
 @login_required
 def toggle_superuser(request, id):
     current_profile = get_current_profile(request)
@@ -145,3 +148,20 @@ def remove_profile(request, id):
         pfl.delete()
         return redirect('logout')
     return redirect('index')
+
+
+class ViewSearch(View):
+
+    template = 'profiles.html'
+
+    def get(self, request, *args, **kwargs):
+        return redirect('index')
+
+    def post(self, request, *args, **kwargs):
+        current_profile = get_current_profile(request)
+        text = request.POST['text']
+        profiles = None
+        if current_profile:
+            filter_condition = Q(name__icontains=text) | Q(user__username__icontains=text)
+            profiles = Profile.objects.filter(filter_condition).exclude(id=current_profile.id)
+        return render(request, 'profiles.html', {"current_profile": current_profile, "profiles": profiles, "text": text})

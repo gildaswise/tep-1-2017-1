@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^profile/blocks', views.blocks, name="blocks"),
     url(r'^profile/(?P<id>\d+)/block', views.block, name="block"),
     url(r'^profile/(?P<id>\d+)/unblock', views.remove_block, name="unblock"),
+    url(r'^search/$', views.ViewSearch.as_view(), name="search"),
     url(r'^invites$', views.view_invites, name="invites"),
     url(r'^friends$', views.view_friends, name="friends"),
     url(r'^friends/(?P<id>\d+)/remove$', views.remove_a_friend, name="remove_a_friend"),
