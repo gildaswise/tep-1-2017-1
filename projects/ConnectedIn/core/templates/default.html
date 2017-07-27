@@ -39,6 +39,7 @@
                <li><a href="{% url 'register' %}"><b>Register</b></a></li>
              {% endif %}
              </ul>
+             {% if current_profile %}
              <form class="navbar-form navbar-right" action="{% url 'search' %}" method="POST">
                {% csrf_token %}
                <div class="input-group">
@@ -48,6 +49,7 @@
                  </div>
                </div>
              </form>
+             {% endif %}
            </div><!-- /.navbar-collapse -->
          </div><!-- /.container-fluid -->
        </nav>

@@ -8,14 +8,22 @@
     <link href="{% static 'styles/main.css' %}" rel="stylesheet"/>
 </head>
 <body>
+
 <div class="container">
+
     <div class="header">
-        <h3 class="text-muted">ConnectedIn {% block extra-title %}{% endblock %}</h3>
+       <nav class="navbar navbar-default navbar-fixed-top">
+         <div class="container-fluid">
+             <a class="navbar-brand" href="{% url 'index' %}">ConnectedIn {% block extra-title %}{% endblock %}</a>
+         </div>
+       </nav>
     </div>
-    <div class="container">
+
+    <div class="body" style="margin-top:4em;">
     {% block content %}
     {% endblock %}
     </div>
+
 </div>
 
 <script src="{% static 'scripts/vendor/jquery-1.9.1.js' %}"></script>
