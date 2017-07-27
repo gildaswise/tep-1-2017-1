@@ -28,7 +28,9 @@
     </div>
 </div>
 
-{% elif current_profile %}
+<hr/>
+
+{% endif %}
 
 <div class="row">
 
@@ -76,9 +78,9 @@
                 </a>
               </div>
               <div class="media-body">
-                  <h4 class="media-heading"><a href="{% url 'show_profile' post.profile.id %}">@{{post.profile.user.username}}</a></h4>
+                <h4 class="media-heading"><a href="{% url 'show_profile' post.profile.id %}">@{{post.profile.user.username}}</a></h4>
                 <h5>{{post.content}}</h5>
-                  <h6 class="pull-right"><a href="{% url 'view_post' post.id %}">{{post.edited_at}}</a></h6>
+                <h6 class="pull-right"><a href="{% url 'view_post' post.id %}">{{post.edited_at}}</a></h6>
               </div>
             </div>
 
@@ -87,7 +89,5 @@
     </div>
 
 </div>
-
-{% endif %}
 
 {% endblock %}

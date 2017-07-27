@@ -20,9 +20,9 @@ Checklist da atividade 1
 [X] - Desativar/ativar proprio perfil
 [X] - Pagina para superuser
 [X] - Conceder privilegio de superuser a outro usuario
+[X] - Novo layout
 [ ] - Pesquisar usuario
 [ ] - * - Usuario poder editar seu perfil
-[ ] - Novo layout
 """
 
 if __name__ == "__main__":

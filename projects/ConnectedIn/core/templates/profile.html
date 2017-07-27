@@ -75,14 +75,14 @@
 
             <div class="media card-border">
               <div class="media-left media-top">
-                <a href="{% url 'show_profile' post.profile.id %}">
+                <a href="#">
                   <img class="media-object" src="{{ post.profile.avatar.url }}" width="64" height="64" style="border-radius: 4px;">
                 </a>
               </div>
               <div class="media-body">
                 <h4 class="media-heading">@{{post.profile.user.username}}</h4>
                 <h5>{{post.content}}</h5>
-                <h6 class="pull-right">{{post.edited_at}}</h6>
+                  <h6 class="pull-right"><a href="{% url 'view_post' post.id %}">{{post.edited_at}}</a></h6>
               </div>
             </div>
 
