@@ -45,8 +45,8 @@ def game_detail(request, pk):
         return Response(game_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         today = timezone.make_aware(datetime.now(), timezone.get_current_timezone())
-        if today > game.release_date:
+        if today < game.release_date:
             game.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
-            return Response({"release_date": "This game hasn't launched yet!"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"release_date": "This game is already launched!"}, status=status.HTTP_403_FORBIDDEN)
