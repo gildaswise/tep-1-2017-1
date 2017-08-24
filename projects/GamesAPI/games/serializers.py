@@ -1,12 +1,14 @@
 from rest_framework import serializers
-from .models import Game
+from .models import Game, GameCategory, Score, Player
 
 
-class GameSerializer(serializers.ModelSerializer):
+class GameSerializer(serializers.HyperlinkedModelSerializer):
+
+    game_category = serializers.SlugRelatedField(queryset=GameCategory.objects.all(), slug_field="name")
 
     class Meta:
         model = Game
-        fields = ("id", "name", "release_date", "game_category", "played",)
+        fields = ("id", "url", "name", "release_date", "game_category", "played",)
 
     def is_empty(self, value):
         if value is None or value == "":
@@ -14,7 +16,7 @@ class GameSerializer(serializers.ModelSerializer):
         return value
 
     def is_registered(self, value):
-        if value in list(map(lambda it: it.name, Game.objects.filter(name=value).exclude(id=self.initial_data['id']))):
+        if value in list(map(lambda it: it.name, Game.objects.filter(name=value).exclude(id=self.initial_data["id"]))):
             raise serializers.ValidationError("This game is already registered!")
 
     def validate_name(self, name):
@@ -26,3 +28,31 @@ class GameSerializer(serializers.ModelSerializer):
 
     def validate_game_category(self, game_category):
         return self.is_empty(value=game_category)
+
+
+class GameCategorySerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = GameCategory
+        fields = ("url", "id", "name", "games",)
+
+
+class ScoreSerializer(serializers.HyperlinkedModelSerializer):
+
+    game = serializers.SlugRelatedField(queryset=Game.objects.all(),
+                                        slug_field="name")
+    player = serializers.SlugRelatedField(queryset=Player.objects.all(),
+                                          slug_field="name")
+
+    class Meta:
+        model = Score
+        fields = ("url", "id", "score", "score_date", "player", "game",)
+
+
+class PlayerSerializer(serializers.HyperlinkedModelSerializer):
+
+    scores = ScoreSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Player
+        fields = ("url", "name", "gender", "scores",)
