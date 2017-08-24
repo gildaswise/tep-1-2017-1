@@ -22,56 +22,56 @@ class GameCategoryList(generics.ListCreateAPIView):
 
     queryset = GameCategory.objects.all()
     serializer_class = GameCategorySerializer
-    name = "categories"
+    name = "gamecategory-list"
 
 
 class GameCategoryDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = GameCategory.objects.all()
     serializer_class = GameCategorySerializer
-    name = "category"
+    name = "gamecategory-detail"
 
 
 class GameList(generics.ListCreateAPIView):
 
     queryset = Game.objects.all()
     serializer_class = GameSerializer
-    name = "games"
+    name = "game-list"
 
 
 class GameDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Game.objects.all()
     serializer_class = GameSerializer
-    name = "game"
+    name = "game-detail"
 
 
 class PlayerList(generics.ListCreateAPIView):
 
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
-    name = "players"
+    name = "player-list"
 
 
 class PlayerDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
-    name = "player"
+    name = "player-detail"
 
 
 class ScoreList(generics.ListCreateAPIView):
 
     queryset = Score.objects.all()
     serializer_class = ScoreSerializer
-    name = "scores"
+    name = "score-list"
 
 
 class ScoreDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Score.objects.all()
     serializer_class = ScoreSerializer
-    name = "score"
+    name = "score-detail"
 
 
 class ApiRoot(generics.GenericAPIView):

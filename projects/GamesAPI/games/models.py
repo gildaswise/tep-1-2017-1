@@ -22,6 +22,9 @@ class Game(models.Model):
     class Meta:
         ordering = ("id", "name",)
 
+    def __str__(self):
+        return self.name
+
 
 class Player(models.Model):
 
@@ -53,3 +56,6 @@ class Score(models.Model):
 
     class Meta:
         ordering = ("-score",)
+
+    def __str__(self):
+        return "%s has reviewed %s with %s at %s" % (self.player, self.game, self.score, self.score_date)

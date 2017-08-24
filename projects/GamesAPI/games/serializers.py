@@ -16,7 +16,7 @@ class GameSerializer(serializers.HyperlinkedModelSerializer):
         return value
 
     def is_registered(self, value):
-        if value in list(map(lambda it: it.name, Game.objects.filter(name=value).exclude(id=self.initial_data["id"]))):
+        if value in list(map(lambda it: it.name, Game.objects.filter(name=value))):
             raise serializers.ValidationError("This game is already registered!")
 
     def validate_name(self, name):
@@ -46,7 +46,7 @@ class ScoreSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Score
-        fields = ("url", "id", "score", "score_date", "player", "game",)
+        fields = ("url", "id", "score", "score_date", "player", "game", "__str__",)
 
 
 class PlayerSerializer(serializers.HyperlinkedModelSerializer):
