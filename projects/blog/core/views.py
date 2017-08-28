@@ -1,6 +1,63 @@
-from django.shortcuts import render
-from .models import *
 import json
+from django.urls import reverse
+from django.utils import timezone
+from rest_framework import status, generics, viewsets
+from rest_framework.decorators import api_view
+from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
+from django.shortcuts import render
+from rest_framework.views import APIView
+
+from .serializers import *
+from .models import *
+
+class APIRoot(APIView):
+    def get(self, request):
+
+        data = {
+            "users": "http://localhost:8000/users/",
+            "groups": "http://localhost:8000/posts/",
+            "schedules": "http://localhost:8000/comments/",
+        }
+
+        return Response(data)
+
+
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    name = "user-list"
+
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserDetailSerializer
+    name = "user-detail"
+
+
+class PostList(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    name = "post-list"
+
+
+class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostDetailSerializer
+    name = "post-detail"
+
+
+class CommentList(generics.ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    name = "comment-list"
+
+
+class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    name = "comment-detail"
+
 
 def import_data():
     dump_data = open('db.json', 'r')
