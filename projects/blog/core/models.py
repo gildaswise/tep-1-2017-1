@@ -1,4 +1,7 @@
+from django.contrib.auth import get_user_model
 from django.db import models
+
+User = get_user_model()
 
 
 class Geo(models.Model):
@@ -20,11 +23,21 @@ class Address(models.Model):
         return "%s, %s, %s, %s at %s" % (self.street, self.suite, self.city, self.zipcode, self.geo)
 
 
-class User(models.Model):
-    username = models.CharField(max_length=128)
-    name = models.CharField(max_length=128)
-    email = models.EmailField()
+class Profile(models.Model):
+    user = models.ForeignKey(User)
     address = models.ForeignKey(Address)
+
+    @property
+    def username(self):
+        return self.user.username
+
+    @property
+    def name(self):
+        return self.user.full_name
+
+    @property
+    def email(self):
+        return self.user.email
 
     def __str__(self):
         return "@%s - %s - %s" % (self.username, self.name, self.email)
@@ -33,10 +46,10 @@ class User(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=128)
     body = models.TextField()
-    user = models.ForeignKey(User, related_name="posts")
+    profile = models.ForeignKey(Profile, related_name="posts")
 
     def __str__(self):
-        return "Post from @%s - %s" % (self.user.username, self.title)
+        return "Post from @%s - %s" % (self.profile.username, self.title)
 
 
 class Comment(models.Model):

@@ -1,15 +1,17 @@
 import json
-from django.urls import reverse
-from django.utils import timezone
-from rest_framework import status, generics, viewsets
-from rest_framework.decorators import api_view
-from rest_framework.generics import get_object_or_404
+
+from rest_framework import generics
 from rest_framework.response import Response
-from django.shortcuts import render
 from rest_framework.views import APIView
 
-from .serializers import *
+from django.contrib.auth import get_user_model
+
 from .models import *
+from .serializers import *
+
+
+User = get_user_model()
+
 
 class APIRoot(APIView):
     def get(self, request):
@@ -23,15 +25,15 @@ class APIRoot(APIView):
         return Response(data)
 
 
-class UserList(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class ProfileList(generics.ListCreateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
     name = "user-list"
 
 
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserDetailSerializer
+class ProfileDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileDetailSerializer
     name = "user-detail"
 
 
@@ -80,7 +82,7 @@ def import_data():
     #     "body": "",
     # },
 
-    # User as json
+    # Profile as json
     # {
     #     "id": 1,
     #     "name": "Leanne Graham",
@@ -106,18 +108,23 @@ def import_data():
                                          city=user['address']['city'],
                                          zipcode=user['address']['zipcode'],
                                          geo=geo)
-        User.objects.create(id=user['id'],
-                            name=user['name'],
-                            username=user['username'],
-                            email=user['email'],
+        first_name, last_name = user['name'].split(" ")
+        password = first_name.lower()+"@1234"
+        new_user = User.objects.create_user(first_name=first_name,
+                                        last_name=last_name,
+                                        username=user['username'],
+                                        email=user['email'],
+                                        password=password)
+        Profile.objects.create(id=user['id'],
+                            user=new_user,
                             address=address)
 
     for post in as_json['posts']:
-        user = User.objects.get(id=post['user_id'])
+        profile = Profile.objects.get(id=post['user_id'])
         Post.objects.create(id=post['id'],
                             title=post['title'],
                             body=post['body'],
-                            user=user)
+                            profile=profile)
 
     for comment in as_json['comments']:
         post = Post.objects.get(id=comment['post_id'])

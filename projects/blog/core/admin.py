@@ -3,6 +3,6 @@ from .models import *
 
 admin.site.register(Geo)
 admin.site.register(Address)
-admin.site.register(User)
+admin.site.register(Profile)
 admin.site.register(Post)
 admin.site.register(Comment)

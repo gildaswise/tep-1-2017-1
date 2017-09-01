@@ -28,37 +28,37 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
 
-    user = serializers.SlugRelatedField(queryset=User.objects.all(),
+    profile = serializers.SlugRelatedField(queryset=Profile.objects.all(),
                                         slug_field="username")
 
     class Meta:
         model = Post
-        fields = ("url", "title", "body", "user",)
+        fields = ("url", "title", "body", "profile",)
 
 
 class PostDetailSerializer(serializers.HyperlinkedModelSerializer):
 
-    user = serializers.SlugRelatedField(queryset=User.objects.all(),
+    profile = serializers.SlugRelatedField(queryset=Profile.objects.all(),
                                         slug_field="username")
     comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Post
-        fields = ("url", "title", "body", "user", "comments",)
+        fields = ("url", "title", "body", "profile", "comments",)
 
 
-class UserSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = User
+        model = Profile
         fields = ("url", "id", "username", "email", "name", "address",)
 
-class UserDetailSerializer(serializers.ModelSerializer):
+class ProfileDetailSerializer(serializers.ModelSerializer):
 
     posts = PostSerializer(many=True, read_only=True)
 
     class Meta:
-        model = User
+        model = Profile
         fields = ("url", "id", "username", "email", "name", "address", "posts")
 
 
