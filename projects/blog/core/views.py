@@ -4,10 +4,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from django.contrib.auth import get_user_model
-
 from rest_framework import permissions
-from .models import *
 from .serializers import *
 from .permissions import *
 
@@ -143,13 +140,13 @@ def import_data():
         first_name, last_name = user['name'].split(" ")
         password = first_name.lower()+"@1234"
         new_user = User.objects.create_user(first_name=first_name,
-                                        last_name=last_name,
-                                        username=user['username'],
-                                        email=user['email'],
-                                        password=password)
+                                            last_name=last_name,
+                                            username=user['username'],
+                                            email=user['email'],
+                                            password=password)
         Profile.objects.create(id=user['id'],
-                            user=new_user,
-                            address=address)
+                               user=new_user,
+                               address=address)
 
     for post in as_json['posts']:
         profile = Profile.objects.get(id=post['user_id'])

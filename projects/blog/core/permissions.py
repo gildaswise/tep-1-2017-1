@@ -1,5 +1,4 @@
 from rest_framework.permissions import *
-from .models import *
 
 
 class IsUserOrReadOnly(BasePermission):
