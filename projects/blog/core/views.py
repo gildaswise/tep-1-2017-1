@@ -6,8 +6,10 @@ from rest_framework.views import APIView
 
 from django.contrib.auth import get_user_model
 
+from rest_framework import permissions
 from .models import *
 from .serializers import *
+from .permissions import *
 
 
 User = get_user_model()
@@ -18,47 +20,77 @@ class APIRoot(APIView):
 
         data = {
             "users": "http://localhost:8000/users/",
-            "groups": "http://localhost:8000/posts/",
-            "schedules": "http://localhost:8000/comments/",
+            "profiles": "http://localhost:8000/profiles/",
+            "posts": "http://localhost:8000/posts/",
+            "comments": "http://localhost:8000/comments/",
         }
 
         return Response(data)
 
 
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    name = "user-list"
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsUserOrReadOnly,)
+
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = UserSerializer
+    name = "user-detail"
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsUserOrReadOnly,)
+
+
 class ProfileList(generics.ListCreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    name = "user-list"
+    name = "profile-list"
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsProfileOrReadOnly,)
 
 
 class ProfileDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileDetailSerializer
-    name = "user-detail"
+    name = "profile-detail"
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsProfileOrReadOnly,)
 
 
 class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     name = "post-list"
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          PostIsOwnerOrReadOnly,)
+
+    def perform_create(self, serializer):
+        serializer.save(profile=self.request.user.profile)
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostDetailSerializer
     name = "post-detail"
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          PostIsOwnerOrReadOnly,)
 
 
 class CommentList(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     name = "comment-list"
+    permission_classes = (CommentIsOwnerOrReadOnly,)
 
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     name = "comment-detail"
+    permission_classes = (CommentIsOwnerOrReadOnly,)
 
 
 def import_data():

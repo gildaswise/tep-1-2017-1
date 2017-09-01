@@ -24,7 +24,7 @@ class Address(models.Model):
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name="profile", on_delete=models.CASCADE)
     address = models.ForeignKey(Address)
 
     @property
@@ -33,7 +33,7 @@ class Profile(models.Model):
 
     @property
     def name(self):
-        return self.user.full_name
+        return self.user.first_name + " " + self.user.last_name
 
     @property
     def email(self):
@@ -46,7 +46,7 @@ class Profile(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=128)
     body = models.TextField()
-    profile = models.ForeignKey(Profile, related_name="posts")
+    profile = models.ForeignKey(Profile, related_name="posts", on_delete=models.CASCADE)
 
     def __str__(self):
         return "Post from @%s - %s" % (self.profile.username, self.title)
@@ -56,7 +56,7 @@ class Comment(models.Model):
     name = models.CharField(max_length=128)
     email = models.EmailField()
     body = models.TextField()
-    post = models.ForeignKey(Post, related_name="comments")
+    post = models.ForeignKey(Post, related_name="comments", on_delete=models.CASCADE)
 
     def __str__(self):
         return "Comment from %s" % (self.name)

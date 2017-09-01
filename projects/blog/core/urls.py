@@ -7,6 +7,12 @@ from .views import *
 urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^$', APIRoot.as_view(), name='root'),
+    url(r'^users/$',
+        UserList.as_view(),
+        name=UserList.name),
+    url(r'^users/(?P<pk>[0-9]+)/$',
+        UserDetail.as_view(),
+        name=UserDetail.name),
     url(r'^profiles/$',
         ProfileList.as_view(),
         name=ProfileList.name),

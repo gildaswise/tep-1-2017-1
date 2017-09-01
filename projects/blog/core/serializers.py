@@ -18,9 +18,6 @@ class AddressSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
 
-    post = serializers.SlugRelatedField(queryset=Post.objects.all(),
-                                          slug_field="title")
-
     class Meta:
         model = Comment
         fields = ("url", "name", "email", "body", "post",)
@@ -47,11 +44,29 @@ class PostDetailSerializer(serializers.HyperlinkedModelSerializer):
         fields = ("url", "title", "body", "profile", "comments",)
 
 
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Profile
+        fields = ("url", "id", "username", "email")
+
+
+class UserDetailSerializer(serializers.HyperlinkedModelSerializer):
+
+    profile = serializers.SlugRelatedField(queryset=Profile.objects.all(),
+                                           slug_field="username")
+
+    class Meta:
+        model = Profile
+        fields = ("url", "id", "username", "email", "first_name", "last_name", "profile")
+
+
 class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
         fields = ("url", "id", "username", "email", "name", "address",)
+
 
 class ProfileDetailSerializer(serializers.ModelSerializer):
 

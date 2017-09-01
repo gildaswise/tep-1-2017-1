@@ -102,6 +102,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Django REST framework
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.BasicAuthentication',
+                                       'rest_framework.authentication.SessionAuthentication',),
+    'PAGE_SIZE': 10
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
