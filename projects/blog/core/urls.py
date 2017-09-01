@@ -1,11 +1,13 @@
 from django.conf.urls import url, include
 from rest_framework import routers
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken import views
 
 from .views import *
 
 urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api-token/', views.obtain_auth_token, name='api-token'),
     url(r'^$', APIRoot.as_view(), name='root'),
     url(r'^users/$',
         UserList.as_view(),
