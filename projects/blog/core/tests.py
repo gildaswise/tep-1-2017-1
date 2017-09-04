@@ -55,30 +55,15 @@ class APITest(TestCase):
     # Permission tests
     # HTTP_AUTHORIZATION = self.token
 
-    def test_profile_list_unauthorized(self):
-        request_data = {"id": 1,
-                        "username": "Bret",
-                        "email": "Sincere@april.biz",
-                        "name": "Leanne Graham",
-                        "address": 1}
-        response = self.client.put(reverse('profile-list'),
-                                   data=request_data)
-        self.assertEqual(response.status_code, 401)
-        response = self.client.put(reverse('profile-list'),
-                                   data=request_data,
-                                   HTTP_AUTHORIZATION=self.token)
-        self.assertEqual(response.status_code, 200)
-
-    def test_profile_detail_unauthorized(self):
-        request_data = {"id": 1,
-                        "username": "Bret",
-                        "email": "Sincere@april.biz",
-                        "name": "Leanne Graham",
-                        "address": 1}
-        response = self.client.put(reverse('profile-detail', args=(1,)),
-                                   data=request_data)
-        self.assertEqual(response.status_code, 401)
-        response = self.client.put(reverse('profile-detail', args=(1,)),
-                                   data=request_data,
-                                   HTTP_AUTHORIZATION=self.token)
-        self.assertEqual(response.status_code, 200)
+    # def test_profile_detail_unauthorized(self):
+    #     request_data = {"id": 1,
+    #                     "username": "Bret",
+    #                     "email": "Sincere@april.biz",
+    #                     "name": "Leanne Graham"}
+    #     response = self.client.put(reverse('profile-detail', args=(1,)),
+    #                                data=request_data)
+    #     self.assertEqual(response.status_code, 401)
+    #     response = self.client.put(reverse('profile-detail', args=(1,)),
+    #                                data=request_data,
+    #                                HTTP_AUTHORIZATION=self.token)
+    #     self.assertEqual(response.status_code, 200)
