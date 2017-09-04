@@ -1,14 +1,37 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .models import Game, GameCategory, Score, Player
+
+User = get_user_model()
+
+
+class UserGameSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Game
+        fields = ('url','name')
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+
+    games = UserGameSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('url', 'pk','username','games')
 
 
 class GameSerializer(serializers.HyperlinkedModelSerializer):
 
+    owner = serializers.ReadOnlyField(source="owner.username")
     game_category = serializers.SlugRelatedField(queryset=GameCategory.objects.all(), slug_field="name")
 
     class Meta:
         model = Game
+        depth = 4
         fields = ("id", "url", "name", "release_date", "game_category", "played",)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
     def is_empty(self, value):
         if value is None or value == "":

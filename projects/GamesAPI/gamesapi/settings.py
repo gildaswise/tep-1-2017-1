@@ -118,7 +118,16 @@ USE_L10N = True
 USE_TZ = True
 
 
-
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.BasicAuthentication',
+                                       'rest_framework.authentication.SessionAuthentication',
+                                       'rest_framework.authentication.TokenAuthentication',),
+    'DEFAULT_THROTTLE_CLASSES': ('rest_framework.throttling.AnonRateThrottle',
+                                 'rest_framework.throttling.UserRateThrottle',),
+    'DEFAULT_THROTTLE_RATES': {'anon': '5/hour', 'user': '10/hour', 'game-categories': '30/hour'},
+    'PAGE_SIZE': 5
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/

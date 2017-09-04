@@ -9,11 +9,13 @@ from datetime import datetime
 
 from django.urls import reverse
 from django.utils import timezone
-from rest_framework import status, generics
+from rest_framework import status, generics, permissions
 from rest_framework.decorators import api_view
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
+from rest_framework.throttling import *
 
+from .permissions import *
 from .models import *
 from .serializers import *
 
@@ -23,6 +25,8 @@ class GameCategoryList(generics.ListCreateAPIView):
     queryset = GameCategory.objects.all()
     serializer_class = GameCategorySerializer
     name = "gamecategory-list"
+    throttle_scope = 'game-categories'
+    throttle_classes = (ScopedRateThrottle,)
 
 
 class GameCategoryDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -30,6 +34,8 @@ class GameCategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = GameCategory.objects.all()
     serializer_class = GameCategorySerializer
     name = "gamecategory-detail"
+    throttle_scope = 'game-categories'
+    throttle_classes = (ScopedRateThrottle,)
 
 
 class GameList(generics.ListCreateAPIView):
@@ -37,6 +43,10 @@ class GameList(generics.ListCreateAPIView):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
     name = "game-list"
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly,
+        IsOwnerOrReadOnly,
+    )
 
 
 class GameDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -44,6 +54,10 @@ class GameDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
     name = "game-detail"
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly,
+        IsOwnerOrReadOnly,
+    )
 
 
 class PlayerList(generics.ListCreateAPIView):
@@ -58,6 +72,20 @@ class PlayerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
     name = "player-detail"
+
+
+class UserList(generics.ListCreateAPIView):
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    name = "user-list"
+
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    name = "user-detail"
 
 
 class ScoreList(generics.ListCreateAPIView):
@@ -83,7 +111,8 @@ class ApiRoot(generics.GenericAPIView):
             "players": reverse(PlayerList.name),
             "categories": reverse(GameCategoryList.name),
             "games": reverse(GameList.name),
-            "scores": reverse(ScoreList.name)
+            "scores": reverse(ScoreList.name),
+            "users": reverse(UserList.name)
         })
 
 
